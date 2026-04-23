@@ -1,0 +1,94 @@
+{
+  "name": "orangehrm-ui-automation-ci",
+  "version": "1.0.0",
+  "description": "Playwright and TypeScript ui e2e automation framework for orange hrm application.",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.js",
+    "lint-check": "npm run type-check && npm run lint",
+    "pretest:auth:admin": "npm run lint-check",
+    "pretest:auth:general": "npm run lint-check",
+    "pretest:ui": "npm run lint-check",
+    "pretest:ui:mcp": "npm run lint-check",
+    "pretest:api": "npm run lint-check",
+    "pretest:db": "npm run lint-check",
+    "pretest:encryption": "npm run lint-check",
+    "test:encryption": "npx playwright test tests/encryption --project=general-user",
+    "test:auth:admin": "npx playwright test tests/layers/ui/authentication/Auth.admin-user.setup.ts --project=setup-admin-user",
+    "test:auth:general": "npx playwright test tests/layers/ui/authentication/Auth.general-user.setup.ts --project=setup-general-user",
+    "test:ui": "cross-env TEST_LAYER=ui tsx scripts/test-executor.ts",
+    "test:api": "cross-env TEST_LAYER=api tsx scripts/test-executor.ts",
+    "test:db": "cross-env TEST_LAYER=db tsx scripts/test-executor.ts",
+    "test:failed": "npx playwright test --last-failed",
+    "ui": "cross-env TEST_LAYER=ui tsx scripts/test-executor.ts --ui",
+    "codegen": "npx playwright codegen",
+    "debug": "cross-env TEST_LAYER=ui tsx scripts/test-executor.ts --debug",
+    "report": "npx playwright show-report"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.json": [
+      "prettier --write"
+    ],
+    "*.{md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/automation1905517/orangehrm-ui-automation-ci.git"
+  },
+  "keywords": [
+    "orangehrm",
+    "automation",
+    "playwright",
+    "typescript",
+    "e2e",
+    "ui",
+    "regression",
+    "sanity",
+    "logging",
+    "report"
+  ],
+  "author": "Tshifhiwa Sinugo",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://gitlab.com/automation1905517/orangehrm-ui-automation-ci/issues"
+  },
+  "homepage": "https://gitlab.com/automation1905517/orangehrm-ui-automation-ci#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/luxon": "^3.7.1",
+    "@types/node": "^25.6.0",
+    "allure-playwright": "^3.7.1",
+    "cspell": "^9.8.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-playwright": "^2.10.2",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.0"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.4.0",
+    "argon2": "^0.44.0",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.4.2",
+    "luxon": "^3.7.2",
+    "pdf-parse": "^2.4.5",
+    "winston": "^3.19.0"
+  }
+}
