@@ -1,15 +1,13 @@
 name: Orange HRM UI Automation CI
 
 on:
-  # Auto-trigger: any push to environment/QA (i.e. a merge from develop)
-  # runs regression against QA with all defaults below.
   push:
     branches:
-      - "environment/QA"     # ← only auto-triggers here
+      - "environment/QA"
   pull_request:
     branches:
-      - "environment/QA"     # ← only auto-triggers here
-  workflow_dispatch:         # ← button works because file is on develop
+      - "environment/QA"
+  workflow_dispatch:
     inputs:
       env:
         description: "Target environment"
@@ -72,7 +70,7 @@ on:
           - "true"
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # ← opts into Node.js 24 now
   ENV: ${{ github.event.inputs.env || 'qa' }}
   ENV_SLUG: ${{ github.event.inputs.env || 'qa' }}
   USER_ROLE: ${{ github.event.inputs.user_role || 'admin-user' }}
@@ -81,16 +79,15 @@ env:
   SHARD_COUNT: ${{ github.event.inputs.shard_count || '4' }}
   SKIP_BROWSER_INIT: ${{ github.event.inputs.skip_browser_init || 'false' }}
 
-# Fixes: HttpError on JUnit reporter + permission denied on gh-pages push
 permissions:
   checks: write
   pull-requests: write
   contents: write
 
-# ---------------------------------------------------------------------------
-# JOB 1 — Resolve the test tag from TEST_TYPE (mirrors helpers.getTestTag)
-# ---------------------------------------------------------------------------
 jobs:
+  # ---------------------------------------------------------------------------
+  # JOB 1 — Resolve the test tag from TEST_TYPE
+  # ---------------------------------------------------------------------------
   resolve-tag:
     name: Resolve test tag
     runs-on: ubuntu-latest
@@ -148,16 +145,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.2.2          # ← latest, Node 24 compatible
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"                   # ← upgraded from 20 to 22 LTS
           cache: "npm"
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4.2.3
+        uses: actions/cache@v4.2.3             # ← already latest
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
@@ -179,7 +176,6 @@ jobs:
       - name: Run shard ${{ matrix.shard }}
         env:
           CI: "true"
-          # CI_PORTAL_BASE_URL: "https://opensource-demo.${{ env.ENV_SLUG }}.orangehrmlive.com/web/index.php/auth/login"
           CI_PORTAL_BASE_URL: "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
           CI_PORTAL_GENERAL_USERNAME: ${{ secrets.CI_PORTAL_GENERAL_USERNAME }}
           CI_PORTAL_GENERAL_PASSWORD: ${{ secrets.CI_PORTAL_GENERAL_PASSWORD }}
@@ -199,7 +195,6 @@ jobs:
           EXIT_CODE=$?
           set -e
 
-          # Rename blob reports with shard suffix (mirrors Jenkins pipeline)
           mkdir -p all-blob-reports
           SHARD_DIR="blob-report-${{ matrix.shard }}"
 
@@ -223,7 +218,7 @@ jobs:
 
       - name: Upload blob report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2   # ← latest, Node 24 compatible
         with:
           name: blob-report-shard-${{ matrix.shard }}
           path: all-blob-reports/
@@ -238,22 +233,26 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: always()
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: write
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.2.2          # ← latest, Node 24 compatible
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"                   # ← upgraded from 20 to 22 LTS
           cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Download all blob reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.3.0  # ← latest, Node 24 compatible
         with:
           pattern: blob-report-shard-*
           path: all-blob-reports
@@ -275,7 +274,7 @@ jobs:
 
       - name: Upload merged HTML report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2   # ← latest, Node 24 compatible
         with:
           name: playwright-report
           path: playwright-report/
@@ -283,7 +282,7 @@ jobs:
 
       - name: Publish test results (JUnit)
         if: always()
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v1.9.1        # ← pinned to latest stable
         with:
           name: Playwright Results
           path: playwright-report/results.xml
