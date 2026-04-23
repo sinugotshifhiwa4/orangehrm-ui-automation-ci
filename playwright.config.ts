@@ -23,6 +23,9 @@ const setupRole = resolveCleanupDependency();
 
 // Determine shard index for parallel execution in CI
 const shardIndex = process.env.SHARD_INDEX || "0";
+const allureResultsDir = isCI
+  ? `allure-results-${shardIndex}`
+  : "allure-results";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -42,8 +45,18 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: WorkerAllocator.getOptimalWorkerCount("10-percent"),
   reporter: isCI
-    ? [["blob", { outputDir: `blob-report-${shardIndex}`, alwaysReport: true }]]
-    : [["html"], ["line"]],
+    ? [
+        [
+          "blob",
+          { outputDir: `blob-report-${shardIndex}`, alwaysReport: true },
+        ],
+        ["allure-playwright", { resultsDir: allureResultsDir }],
+      ]
+    : [
+        ["html"],
+        ["line"],
+        ["allure-playwright", { resultsDir: allureResultsDir }],
+      ],
 
   /**
    * The `grep` option enables running tests by tag or keyword.
