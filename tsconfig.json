@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+
+    "lib": ["ES2022", "dom"],
+
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    "types": ["node", "@playwright/test"],
+
+    "noEmit": true,
+    "sourceMap": true,
+    "isolatedModules": true
+  },
+
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "fixtures/**/*.ts",
+    "*.spec.ts",
+    "*.ts"
+  ],
+
+  "exclude": [
+    "node_modules",
+    "dist",
+    "logs",
+    "downloads",
+    "playwright-report",
+    "test-results",
+    ".github",
+    ".gitlab",
+    ".gitlab-ci",
+    ".azure",
+    ".azuredevops",
+    ".jenkins",
+    ".circleci",
+    ".travis",
+    ".buildkite",
+    ".teamcity",
+    ".drone",
+    ".argo",
+    ".ci",
+    "ci"
+  ]
+}
