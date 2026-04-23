@@ -1,0 +1,321 @@
+name: Orange HRM UI Automation CI
+
+on:
+  # Auto-trigger: any push to environment/QA (i.e. a merge from develop)
+  # runs regression against QA with all defaults below.
+  push:
+    branches:
+      - "environment/QA"
+  pull_request:
+    branches:
+      - "environment/QA"
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Target environment"
+        required: true
+        default: "qa"
+        type: choice
+        options:
+          - qa
+          - uat
+          - preprod
+      user_role:
+        description: "User role"
+        required: true
+        default: "admin-user"
+        type: choice
+        options:
+          - general-user
+          - admin-user
+      test_type:
+        description: "Test type / tag"
+        required: true
+        default: "regression"
+        type: choice
+        options:
+          - regression
+          - sanity
+          - authenticate
+          - dashboard
+          - skip-auth
+      test_layer:
+        description: "Test layer"
+        required: true
+        default: "ui"
+        type: choice
+        options:
+          - ui
+          - api
+          - db
+          - all
+      shard_count:
+        description: "Number of shards"
+        required: true
+        default: "4"
+        type: choice
+        options:
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "6"
+          - "8"
+          - "10"
+      skip_browser_init:
+        description: "Skip Playwright browser initialisation"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  # Push/PR to environment/QA has no inputs — everything defaults to the
+  # QA regression baseline. Manual dispatches use the user's selections.
+  ENV: ${{ github.event.inputs.env || 'qa' }}
+  # ENV is the lowercase portal slug (qa/uat/preprod) used for the base URL
+  # and passed to tests. The GitHub Actions environment is named "QA" (uppercase)
+  # and is set separately on the test job below.
+  ENV_SLUG: ${{ github.event.inputs.env || 'qa' }}
+  USER_ROLE: ${{ github.event.inputs.user_role || 'admin-user' }}
+  TEST_TYPE: ${{ github.event.inputs.test_type || 'regression' }}
+  TEST_LAYER: ${{ github.event.inputs.test_layer || 'ui' }}
+  SHARD_COUNT: ${{ github.event.inputs.shard_count || '4' }}
+  SKIP_BROWSER_INIT: ${{ github.event.inputs.skip_browser_init || 'false' }}
+
+# ---------------------------------------------------------------------------
+# JOB 1 — Resolve the test tag from TEST_TYPE (mirrors helpers.getTestTag)
+# ---------------------------------------------------------------------------
+jobs:
+  resolve-tag:
+    name: Resolve test tag
+    runs-on: ubuntu-latest
+    outputs:
+      test_tag: ${{ steps.tag.outputs.test_tag }}
+    steps:
+      - name: Map TEST_TYPE → PLAYWRIGHT_GREP tag
+        id: tag
+        run: |
+          declare -A TAG_MAP=(
+            [sanity]="@sanity"
+            [authenticate]="@authenticate"
+            [regression]="@regression"
+            [dashboard]="@dashboard"
+            [skip-auth]="@skip-auth"
+          )
+          TAG="${TAG_MAP[${{ env.TEST_TYPE }}]}"
+          if [ -z "$TAG" ]; then
+            echo "ERROR: Unknown TEST_TYPE '${{ env.TEST_TYPE }}'" >&2
+            exit 1
+          fi
+          echo "test_tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Resolved tag: $TAG"
+
+  # ---------------------------------------------------------------------------
+  # JOB 2 — Build a shard matrix from SHARD_COUNT
+  # ---------------------------------------------------------------------------
+  build-matrix:
+    name: Build shard matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: Generate shard indices
+        id: matrix
+        run: |
+          COUNT=${{ env.SHARD_COUNT }}
+          INDICES=$(python3 -c "import json; print(json.dumps(list(range(1, $COUNT + 1))))")
+          echo "matrix={\"shard\":$INDICES}" >> "$GITHUB_OUTPUT"
+          echo "Shard matrix: $INDICES"
+
+  # ---------------------------------------------------------------------------
+  # JOB 3 — Run sharded tests in parallel
+  # ---------------------------------------------------------------------------
+  test:
+    name: "Shard ${{ matrix.shard }} / ${{ github.event.inputs.shard_count || '4' }}"
+    needs: [resolve-tag, build-matrix]
+    runs-on: ubuntu-latest
+    # GitHub Actions environment (named "QA" in repo settings) — controls
+    # secret scoping and protection rules. Separate from the portal env value.
+    environment: QA
+    timeout-minutes: 45
+
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4.2.3
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            playwright-browsers-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium --with-deps
+
+      - name: Install Playwright browser system deps (cached hit)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Run shard ${{ matrix.shard }}
+        env:
+          CI: "true"
+          # CI_PORTAL_BASE_URL: "https://opensource-demo.${{ env.ENV_SLUG }}.orangehrmlive.com/web/index.php/auth/login"
+          CI_PORTAL_BASE_URL: "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+          CI_PORTAL_GENERAL_USERNAME: ${{ secrets.CI_PORTAL_GENERAL_USERNAME }}
+          CI_PORTAL_GENERAL_PASSWORD: ${{ secrets.CI_PORTAL_GENERAL_PASSWORD }}
+          CI_PORTAL_ADMIN_USERNAME: ${{ secrets.CI_PORTAL_ADMIN_USERNAME }}
+          CI_PORTAL_ADMIN_PASSWORD: ${{ secrets.CI_PORTAL_ADMIN_PASSWORD }}
+        run: |
+          set +e
+          npx cross-env \
+            TEST_LAYER=${{ env.TEST_LAYER }} \
+            USER_ROLE=${{ env.USER_ROLE }} \
+            SHARD_INDEX=${{ matrix.shard }} \
+            SHARD_TOTAL=${{ env.SHARD_COUNT }} \
+            TEST_TAGS="${{ needs.resolve-tag.outputs.test_tag }}" \
+            ENV=${{ env.ENV }} \
+            SKIP_BROWSER_INIT=${{ env.SKIP_BROWSER_INIT }} \
+            tsx scripts/test-executor.ts
+          EXIT_CODE=$?
+          set -e
+
+          # Rename blob reports with shard suffix (mirrors Jenkins pipeline)
+          mkdir -p all-blob-reports
+          SHARD_DIR="blob-report-${{ matrix.shard }}"
+
+          for i in {1..5}; do
+            ls "$SHARD_DIR"/*.zip >/dev/null 2>&1 && break
+            echo "Waiting for report files... ($i)"
+            sleep 1
+          done
+
+          if ls "$SHARD_DIR"/*.zip >/dev/null 2>&1; then
+            echo "Reports found for shard ${{ matrix.shard }}"
+            for f in "$SHARD_DIR"/*.zip; do
+              [ -e "$f" ] || continue
+              cp "$f" "all-blob-reports/$(basename "$f" .zip)-shard-${{ matrix.shard }}.zip"
+            done
+          else
+            echo "No tests executed in shard ${{ matrix.shard }}"
+          fi
+
+          exit $EXIT_CODE
+
+      - name: Upload blob report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-report-shard-${{ matrix.shard }}
+          path: all-blob-reports/
+          retention-days: 1
+          if-no-files-found: warn
+
+  # ---------------------------------------------------------------------------
+  # JOB 4 — Merge blob reports and publish HTML
+  # ---------------------------------------------------------------------------
+  merge-reports:
+    name: Merge reports & publish
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download all blob reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: blob-report-shard-*
+          path: all-blob-reports
+          merge-multiple: true
+
+      - name: Merge Playwright reports
+        run: |
+          COUNT=$(ls all-blob-reports/*.zip 2>/dev/null | wc -l)
+          echo "Found $COUNT blob report(s)"
+          if [ "$COUNT" -eq 0 ]; then
+            echo "ERROR: No blob reports found — nothing to merge"
+            exit 1
+          fi
+
+          mkdir -p playwright-report
+          PLAYWRIGHT_HTML_REPORT=playwright-report \
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME=playwright-report/results.xml \
+          npx playwright merge-reports --reporter=html,junit ./all-blob-reports
+
+      - name: Upload merged HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Publish test results (JUnit)
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Playwright Results
+          path: playwright-report/results.xml
+          reporter: java-junit
+          fail-on-error: false
+
+      - name: Publish HTML report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: playwright-report
+          destination_dir: reports/${{ github.run_number }}
+          keep_files: true
+          enable_jekyll: false
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "### Playwright Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Run** | #${{ github.run_number }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Trigger** | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Branch** | ${{ github.ref_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Environment** | ${{ env.ENV }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Test type** | ${{ env.TEST_TYPE }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Layer** | ${{ env.TEST_LAYER }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Shards** | ${{ env.SHARD_COUNT }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          REPORT_URL="https://${{ github.repository_owner }}.github.io/$(echo '${{ github.repository }}' | cut -d'/' -f2)/reports/${{ github.run_number }}/index.html"
+          echo "[View full Playwright report]($REPORT_URL)" >> $GITHUB_STEP_SUMMARY
