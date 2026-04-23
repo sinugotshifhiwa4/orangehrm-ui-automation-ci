@@ -70,7 +70,7 @@ on:
           - "true"
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # ← opts into Node.js 24 now
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   ENV: ${{ github.event.inputs.env || 'qa' }}
   ENV_SLUG: ${{ github.event.inputs.env || 'qa' }}
   USER_ROLE: ${{ github.event.inputs.user_role || 'admin-user' }}
@@ -300,16 +300,21 @@ jobs:
           keep_files: true
           enable_jekyll: false
 
-      - name: Create root redirect
+      - name: Update root redirect on gh-pages
         if: always()
         run: |
-          mkdir -p root-redirect
-          cat > root-redirect/index.html << EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages
+          git checkout gh-pages
+
+          cat > index.html << EOF
           <!DOCTYPE html>
           <html>
             <head>
               <meta charset="utf-8">
               <title>Redirecting to latest Playwright report...</title>
+              <meta http-equiv="refresh" content="0; url=reports/${{ github.run_number }}/index.html" />
               <script>window.location.href = "reports/${{ github.run_number }}/index.html";</script>
             </head>
             <body>
@@ -318,15 +323,9 @@ jobs:
           </html>
           EOF
 
-      - name: Deploy root redirect to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v4.0.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: root-redirect
-          keep_files: true
-          enable_jekyll: false
+          git add index.html
+          git diff --cached --quiet || git commit -m "chore: update root redirect to run #${{ github.run_number }}"
+          git push origin gh-pages
 
       - name: Job summary
         if: always()
