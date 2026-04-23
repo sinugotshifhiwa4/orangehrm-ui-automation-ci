@@ -145,16 +145,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2          # ← latest, Node 24 compatible
+        uses: actions/checkout@v4.2.2
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"                   # ← upgraded from 20 to 22 LTS
+          node-version: "22"
           cache: "npm"
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4.2.3             # ← already latest
+        uses: actions/cache@v4.2.3
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
@@ -218,7 +218,7 @@ jobs:
 
       - name: Upload blob report
         if: always()
-        uses: actions/upload-artifact@v4.6.2   # ← latest, Node 24 compatible
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: blob-report-shard-${{ matrix.shard }}
           path: all-blob-reports/
@@ -240,19 +240,19 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2          # ← latest, Node 24 compatible
+        uses: actions/checkout@v4.2.2
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"                   # ← upgraded from 20 to 22 LTS
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Download all blob reports
-        uses: actions/download-artifact@v4.3.0  # ← latest, Node 24 compatible
+        uses: actions/download-artifact@v4.3.0
         with:
           pattern: blob-report-shard-*
           path: all-blob-reports
@@ -274,7 +274,7 @@ jobs:
 
       - name: Upload merged HTML report
         if: always()
-        uses: actions/upload-artifact@v4.6.2   # ← latest, Node 24 compatible
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: playwright-report
           path: playwright-report/
@@ -282,14 +282,14 @@ jobs:
 
       - name: Publish test results (JUnit)
         if: always()
-        uses: dorny/test-reporter@v1.9.1        # ← pinned to latest stable
+        uses: dorny/test-reporter@v1.9.1
         with:
           name: Playwright Results
           path: playwright-report/results.xml
           reporter: java-junit
           fail-on-error: false
 
-      - name: Publish HTML report to GitHub Pages
+      - name: Publish report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4.0.0
         with:
@@ -297,6 +297,34 @@ jobs:
           publish_branch: gh-pages
           publish_dir: playwright-report
           destination_dir: reports/${{ github.run_number }}
+          keep_files: true
+          enable_jekyll: false
+
+      - name: Create root redirect
+        if: always()
+        run: |
+          mkdir -p root-redirect
+          cat > root-redirect/index.html << EOF
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Redirecting to latest Playwright report...</title>
+              <script>window.location.href = "reports/${{ github.run_number }}/index.html";</script>
+            </head>
+            <body>
+              <p>Redirecting to latest report... <a href="reports/${{ github.run_number }}/index.html">Click here if not redirected</a></p>
+            </body>
+          </html>
+          EOF
+
+      - name: Deploy root redirect to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: root-redirect
           keep_files: true
           enable_jekyll: false
 
