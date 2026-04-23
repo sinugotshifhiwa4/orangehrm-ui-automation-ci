@@ -25,7 +25,8 @@
     "ui": "cross-env TEST_LAYER=ui tsx scripts/test-executor.ts --ui",
     "codegen": "npx playwright codegen",
     "debug": "cross-env TEST_LAYER=ui tsx scripts/test-executor.ts --debug",
-    "report": "npx playwright show-report"
+    "report": "npx playwright show-report",
+    "report:allure": "npx allure-commandline open allure-report"
   },
   "lint-staged": {
     "*.{ts,js}": [
