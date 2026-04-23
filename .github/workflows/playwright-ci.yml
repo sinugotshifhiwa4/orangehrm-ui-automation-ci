@@ -291,24 +291,26 @@ jobs:
 
       - name: Publish report to GitHub Pages
         if: always()
-        uses: peaceiris/actions-gh-pages@v4.0.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: playwright-report
-          destination_dir: reports/${{ github.run_number }}
-          keep_files: true
-          enable_jekyll: false
-
-      - name: Update root redirect on gh-pages
-        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin gh-pages
-          git checkout gh-pages
+          rm -rf gh-pages-worktree
+          git fetch origin gh-pages || true
 
-          cat > index.html << EOF
+          if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            git worktree add -B gh-pages gh-pages-worktree origin/gh-pages
+          else
+            git worktree add --detach gh-pages-worktree
+            cd gh-pages-worktree
+            git checkout --orphan gh-pages
+            git rm -rf . >/dev/null 2>&1 || true
+            cd ..
+          fi
+
+          mkdir -p gh-pages-worktree/reports/${{ github.run_number }}
+          cp -R playwright-report/. gh-pages-worktree/reports/${{ github.run_number }}/
+
+          cat > gh-pages-worktree/index.html << EOF
           <!DOCTYPE html>
           <html>
             <head>
@@ -323,8 +325,11 @@ jobs:
           </html>
           EOF
 
-          git add index.html
-          git diff --cached --quiet || git commit -m "chore: update root redirect to run #${{ github.run_number }}"
+          touch gh-pages-worktree/.nojekyll
+
+          cd gh-pages-worktree
+          git add .
+          git diff --cached --quiet || git commit -m "chore: publish Playwright report for run #${{ github.run_number }}"
           git push origin gh-pages
 
       - name: Job summary
