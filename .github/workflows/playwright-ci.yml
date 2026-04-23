@@ -303,6 +303,8 @@ jobs:
       - name: Job summary
         if: always()
         run: |
+          REPO_NAME="${{ github.event.repository.name }}"
+          REPORT_URL="https://${{ github.repository_owner }}.github.io/${REPO_NAME}/reports/${{ github.run_number }}/index.html"
           echo "### Playwright Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| | |" >> $GITHUB_STEP_SUMMARY
@@ -315,5 +317,4 @@ jobs:
           echo "| **Layer** | ${{ env.TEST_LAYER }} |" >> $GITHUB_STEP_SUMMARY
           echo "| **Shards** | ${{ env.SHARD_COUNT }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          REPORT_URL="https://${{ github.repository_owner }}.github.io/$(echo '${{ github.repository }}' | cut -d'/' -f2)/reports/${{ github.run_number }}/index.html"
           echo "[View full Playwright report]($REPORT_URL)" >> $GITHUB_STEP_SUMMARY
