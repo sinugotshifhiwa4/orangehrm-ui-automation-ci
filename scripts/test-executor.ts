@@ -2,7 +2,9 @@ import { execSync } from "child_process";
 import { resolveUserRole } from "../src/configuration/playwright/projectRole/projectRole.config.js";
 import logger from "../src/configuration/system/logger/loggerManager.js";
 
+// ==============================
 // ENV CONFIG
+// ==============================
 const role = resolveUserRole();
 const layer = process.env.TEST_LAYER || "ui";
 const shardIndex = process.env.SHARD_INDEX;
@@ -12,31 +14,31 @@ const isCI = process.env.CI === "true" || process.env.CI === "1";
 
 const extraArgs = process.argv.slice(2).join(" ");
 
-/**
- * @constant NON_BROWSER_LAYERS
- * @description Layers that never require a browser session or stored auth state.
- *
- * @constant skipAuthSetup
- * @description Controls whether browser initialisation and auth setup are skipped.
- *
- * Resolution order:
- * 1. `SKIP_BROWSER_INIT` env var — explicit override always wins (any layer)
- * 2. Layer default:
- *    - `api` / `db` → `"true"`  (no browser needed)
- *    - `ui`         → `"false"` (uses stored auth state)
- *
- * @example Override for a tagged UI run that bypasses auth:
- *   SKIP_BROWSER_INIT=true TEST_TAGS=@skip-auth npm run test:ui
- */
+// ==============================
+// LAYER CONFIG
+// ==============================
 const NON_BROWSER_LAYERS = new Set(["api", "db"]);
-const skipAuthSetup: string = (() => {
-  if (process.env.SKIP_BROWSER_INIT !== undefined) {
-    return process.env.SKIP_BROWSER_INIT;
+
+/**
+ * Resolve whether browser init should be skipped.
+ *
+ * Priority:
+ * 1. Explicit env override (SKIP_BROWSER_INIT)
+ * 2. Layer-based default
+ */
+const skipAuthSetup: boolean = (() => {
+  const override = process.env.SKIP_BROWSER_INIT;
+
+  if (override !== undefined) {
+    return override === "true";
   }
-  return NON_BROWSER_LAYERS.has(layer) ? "true" : "false";
+
+  return NON_BROWSER_LAYERS.has(layer);
 })();
 
+// ==============================
 // LAYER PATHS
+// ==============================
 const layerPaths: Record<string, string> = {
   ui: "tests/layers/ui",
   api: "tests/layers/api",
@@ -46,7 +48,9 @@ const layerPaths: Record<string, string> = {
 
 const path = layerPaths[layer];
 
+// ==============================
 // VALIDATION
+// ==============================
 if (path === undefined) {
   logger.error(
     `Unknown layer: "${layer}". Available: ${Object.keys(layerPaths).join(", ")}`,
@@ -65,12 +69,12 @@ logger.info(`CI          : ${isCI}`);
 logger.info(`Shard       : ${shardIndex || "-"} / ${shardTotal || "-"}`);
 logger.info(`Grep        : ${grep || "-"}`);
 logger.info(`Extra Args  : ${extraArgs || "-"}`);
+logger.info(`Skip Browser: ${skipAuthSetup}`);
 logger.info("======================================");
 
 // ==============================
 // BUILD COMMAND
 // ==============================
-
 const projectArg = layer === "ui" ? `--project=${role}` : "";
 
 let shardArg = "";
@@ -96,13 +100,15 @@ const command = [
 
 logger.info(`Executing: ${command}`);
 
+// ==============================
 // EXECUTE
+// ==============================
 execSync(command, {
   stdio: "inherit",
   env: {
     ...process.env,
     USER_ROLE: role,
     TEST_LAYER: layer,
-    SKIP_BROWSER_INIT: skipAuthSetup,
+    SKIP_BROWSER_INIT: String(skipAuthSetup),
   },
 });
