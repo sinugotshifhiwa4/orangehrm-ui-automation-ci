@@ -5,11 +5,11 @@ on:
   # runs regression against QA with all defaults below.
   push:
     branches:
-      - "environment/QA"
+      - "environment/QA"     # ← only auto-triggers here
   pull_request:
     branches:
-      - "environment/QA"
-  workflow_dispatch:
+      - "environment/QA"     # ← only auto-triggers here
+  workflow_dispatch:         # ← button works because file is on develop
     inputs:
       env:
         description: "Target environment"
@@ -73,18 +73,19 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-  # Push/PR to environment/QA has no inputs — everything defaults to the
-  # QA regression baseline. Manual dispatches use the user's selections.
   ENV: ${{ github.event.inputs.env || 'qa' }}
-  # ENV is the lowercase portal slug (qa/uat/preprod) used for the base URL
-  # and passed to tests. The GitHub Actions environment is named "QA" (uppercase)
-  # and is set separately on the test job below.
   ENV_SLUG: ${{ github.event.inputs.env || 'qa' }}
   USER_ROLE: ${{ github.event.inputs.user_role || 'admin-user' }}
   TEST_TYPE: ${{ github.event.inputs.test_type || 'regression' }}
   TEST_LAYER: ${{ github.event.inputs.test_layer || 'ui' }}
   SHARD_COUNT: ${{ github.event.inputs.shard_count || '4' }}
   SKIP_BROWSER_INIT: ${{ github.event.inputs.skip_browser_init || 'false' }}
+
+# Fixes: HttpError on JUnit reporter + permission denied on gh-pages push
+permissions:
+  checks: write
+  pull-requests: write
+  contents: write
 
 # ---------------------------------------------------------------------------
 # JOB 1 — Resolve the test tag from TEST_TYPE (mirrors helpers.getTestTag)
@@ -138,8 +139,6 @@ jobs:
     name: "Shard ${{ matrix.shard }} / ${{ github.event.inputs.shard_count || '4' }}"
     needs: [resolve-tag, build-matrix]
     runs-on: ubuntu-latest
-    # GitHub Actions environment (named "QA" in repo settings) — controls
-    # secret scoping and protection rules. Separate from the portal env value.
     environment: QA
     timeout-minutes: 45
 
