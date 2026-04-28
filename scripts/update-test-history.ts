@@ -1,7 +1,4 @@
-import logger from "../src/configuration/system/logger/loggerManager.js";
-
 /**
- * update-test-history.ts
  *
  * Reads the merged Playwright `index.json` and appends a new entry
  * to `test-results-history.json`, scoped by TEST_TYPE so that
@@ -23,6 +20,18 @@ import logger from "../src/configuration/system/logger/loggerManager.js";
 
 import fs from "fs";
 import path from "path";
+import winston from "winston";
+
+// ─── Local logger (avoids importing internal loggerManager) ──────────────────
+
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.simple(),
+  ),
+  transports: [new winston.transports.Console()],
+});
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -37,7 +46,6 @@ interface PlaywrightStats {
 interface PlaywrightIndexJson {
   stats: PlaywrightStats;
   startTime?: string;
-  // Playwright also has suites, errors, etc. — we only need stats
 }
 
 interface TestRun {
@@ -98,7 +106,7 @@ const MAX_RUNS_PER_TYPE = 50;
 
 // 1. Read Playwright index.json
 if (!fs.existsSync(PLAYWRIGHT_INDEX)) {
-  console.error(`[update-test-history] ❌ Cannot find ${PLAYWRIGHT_INDEX}`);
+  logger.error(`[update-test-history] ❌ Cannot find ${PLAYWRIGHT_INDEX}`);
   process.exit(1);
 }
 
@@ -108,7 +116,7 @@ try {
     fs.readFileSync(PLAYWRIGHT_INDEX, "utf-8"),
   ) as PlaywrightIndexJson;
 } catch {
-  console.error(
+  logger.error(
     "[update-test-history] ❌ Failed to parse playwright-report/index.json",
   );
   process.exit(1);
@@ -181,7 +189,7 @@ history.lastUpdated = new Date().toISOString();
 try {
   fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2), "utf-8");
 } catch (err) {
-  console.error("[update-test-history] ❌ Failed to write history file:", err);
+  logger.error("[update-test-history] ❌ Failed to write history file:", err);
   process.exit(1);
 }
 
