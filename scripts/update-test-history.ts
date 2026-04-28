@@ -1,7 +1,7 @@
 /**
  * update-test-history.ts
  *
- * Reads the merged Playwright `index.json` and appends a new entry
+ * Reads the merged Playwright `results.xml` (JUnit) and appends a new entry
  * to `test-results-history.json`, scoped by BRANCH → TEST_TYPE so that
  * trends are tracked independently per branch and per test type.
  *
@@ -35,9 +35,10 @@
 
 import fs from "fs";
 import path from "path";
+import { XMLParser } from "fast-xml-parser";
 import winston from "winston";
 
-// ─── Local logger (avoids importing internal loggerManager) ──────────────────
+// ─── Local logger ─────────────────────────────────────────────────────────────
 
 const logger = winston.createLogger({
   level: "info",
@@ -49,19 +50,6 @@ const logger = winston.createLogger({
 });
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-
-interface PlaywrightStats {
-  expected: number;
-  unexpected: number;
-  skipped: number;
-  flaky: number;
-  duration: number;
-}
-
-interface PlaywrightIndexJson {
-  stats: PlaywrightStats;
-  startTime?: string;
-}
 
 interface TestRun {
   runNumber: number;
@@ -117,38 +105,89 @@ function buildReportUrl(runNumber: number, sub?: string): string {
   return sub ? `${base}/${sub}` : `${base}/index.html`;
 }
 
+// ─── Parse JUnit XML ─────────────────────────────────────────────────────────
+
+function parseJUnitXml(xmlPath: string): {
+  passed: number;
+  failed: number;
+  skipped: number;
+  durationMs: number;
+} {
+  const raw = fs.readFileSync(xmlPath, "utf-8");
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: "@_",
+  });
+  const parsed = parser.parse(raw);
+
+  // JUnit XML can have a single <testsuite> or a <testsuites> wrapper
+  const suites = parsed["testsuites"] ?? parsed["testsuite"];
+
+  let tests = 0;
+  let failures = 0;
+  let errors = 0;
+  let skipped = 0;
+  let duration = 0; // seconds
+
+  const processSuite = (suite: Record<string, string>) => {
+    tests += parseInt(suite["@_tests"] ?? "0", 10);
+    failures += parseInt(suite["@_failures"] ?? "0", 10);
+    errors += parseInt(suite["@_errors"] ?? "0", 10);
+    skipped += parseInt(suite["@_skipped"] ?? "0", 10);
+    duration += parseFloat(suite["@_time"] ?? "0");
+  };
+
+  if (suites?.["testsuite"]) {
+    // <testsuites> wrapper with multiple <testsuite> children
+    const inner = suites["testsuite"];
+    if (Array.isArray(inner)) {
+      inner.forEach(processSuite);
+    } else {
+      processSuite(inner);
+    }
+  } else if (suites) {
+    // Single <testsuite> at root
+    processSuite(suites);
+  }
+
+  const totalFailed = failures + errors;
+  const passed = tests - totalFailed - skipped;
+
+  return {
+    passed: Math.max(0, passed),
+    failed: totalFailed,
+    skipped,
+    durationMs: Math.round(duration * 1000),
+  };
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 const HISTORY_FILE = path.resolve("./test-results-history.json");
-const PLAYWRIGHT_INDEX = path.resolve("./playwright-report/index.json");
+const JUNIT_XML = path.resolve("./playwright-report/results.xml");
 const MAX_RUNS_PER_TYPE = 50;
 
-// 1. Read Playwright index.json
-if (!fs.existsSync(PLAYWRIGHT_INDEX)) {
-  logger.error(`[update-test-history] ❌ Cannot find ${PLAYWRIGHT_INDEX}`);
+// 1. Read and parse results.xml
+if (!fs.existsSync(JUNIT_XML)) {
+  logger.error(`[update-test-history] ❌ Cannot find ${JUNIT_XML}`);
   process.exit(1);
 }
 
-let playwrightData: PlaywrightIndexJson;
+let passed: number;
+let failed: number;
+let skipped: number;
+let durationMs: number;
+
 try {
-  playwrightData = JSON.parse(
-    fs.readFileSync(PLAYWRIGHT_INDEX, "utf-8"),
-  ) as PlaywrightIndexJson;
-} catch {
-  logger.error(
-    "[update-test-history] ❌ Failed to parse playwright-report/index.json",
-  );
+  ({ passed, failed, skipped, durationMs } = parseJUnitXml(JUNIT_XML));
+} catch (err) {
+  logger.error("[update-test-history] ❌ Failed to parse results.xml:", err);
   process.exit(1);
 }
 
-const stats = playwrightData.stats;
-const passed = stats.expected ?? 0;
-const failed = stats.unexpected ?? 0;
-const skipped = stats.skipped ?? 0;
-const flaky = stats.flaky ?? 0;
 const total = passed + failed + skipped;
 const passRate =
-  total > 0 ? Math.round((passed / (passed + failed)) * 1000) / 10 : 0;
+  total > 0 ? Math.round((passed / (passed + failed || 1)) * 1000) / 10 : 0;
 
 const testType = env("TEST_TYPE", "regression");
 const branch = env("GITHUB_REF_NAME", "unknown");
@@ -164,11 +203,11 @@ const newRun: TestRun = {
   passed,
   failed,
   skipped,
-  flaky,
+  flaky: 0, // JUnit XML does not carry flaky info; extend if needed
   total,
   passRate,
-  durationMs: stats.duration ?? 0,
-  durationMin: formatDuration(stats.duration ?? 0),
+  durationMs,
+  durationMin: formatDuration(durationMs),
   reportUrl: buildReportUrl(runNumber),
   allureUrl: buildReportUrl(runNumber, "allure/index.html"),
 };
@@ -183,7 +222,7 @@ if (fs.existsSync(HISTORY_FILE)) {
   try {
     history = JSON.parse(fs.readFileSync(HISTORY_FILE, "utf-8")) as HistoryFile;
 
-    // Migrate old shape (byTestType at root) to new shape (byBranch → byTestType)
+    // Migrate old flat shape (byTestType at root) → new branch-scoped shape
     const legacy = history as unknown as Record<string, unknown>;
     if (legacy["byTestType"] && !history.byBranch) {
       logger.warn(
@@ -209,12 +248,8 @@ if (fs.existsSync(HISTORY_FILE)) {
 if (!history.byBranch[branch]) {
   history.byBranch[branch] = { byTestType: {} };
 }
-
 if (!history.byBranch[branch].byTestType[testType]) {
-  history.byBranch[branch].byTestType[testType] = {
-    testType,
-    runs: [],
-  };
+  history.byBranch[branch].byTestType[testType] = { testType, runs: [] };
 }
 
 // 4. Append run and cap at MAX_RUNS_PER_TYPE
@@ -238,7 +273,7 @@ logger.info(
   `[update-test-history] ✅ Appended run #${runNumber} → branch="${branch}" testType="${testType}"`,
 );
 logger.info(
-  `[update-test-history]    passed=${passed} failed=${failed} skipped=${skipped} flaky=${flaky} passRate=${passRate}%`,
+  `[update-test-history]    passed=${passed} failed=${failed} skipped=${skipped} passRate=${passRate}%`,
 );
 logger.info(
   `[update-test-history]    History now has ${runCount} run(s) for branch="${branch}" / testType="${testType}"`,
