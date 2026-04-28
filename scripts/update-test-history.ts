@@ -9,13 +9,12 @@
  *   {
  *     lastUpdated: string,
  *     byBranch: {
- *       "environment/QA": {
+ *       "develop": {
  *         byTestType: {
  *           "regression": { testType, runs: [...] },
  *           "sanity":     { testType, runs: [...] }
  *         }
- *       },
- *       "environment/UAT": { ... }
+ *       }
  *     }
  *   }
  *
@@ -25,6 +24,7 @@
  * Required env vars (all available in your existing workflow):
  *   TEST_TYPE        - regression | sanity | dashboard | authenticate | skip-auth
  *   ENV              - qa | uat | preprod
+ *   USER_ROLE        - admin-user | general-user  ← NEW
  *   GITHUB_RUN_NUMBER
  *   GITHUB_RUN_ID
  *   GITHUB_REF_NAME  - branch name
@@ -58,6 +58,7 @@ interface TestRun {
   branch: string;
   commitSha: string;
   env: string;
+  userRole: string; // admin-user | general-user
   passed: number;
   failed: number;
   skipped: number;
@@ -192,6 +193,7 @@ const passRate =
 const testType = env("TEST_TYPE", "regression");
 const branch = env("GITHUB_REF_NAME", "unknown");
 const runNumber = parseInt(env("GITHUB_RUN_NUMBER", "0"), 10);
+const userRole = env("USER_ROLE", "unknown"); // admin-user | general-user
 
 const newRun: TestRun = {
   runNumber,
@@ -200,6 +202,7 @@ const newRun: TestRun = {
   branch,
   commitSha: env("GITHUB_SHA").slice(0, 7),
   env: env("ENV", "qa"),
+  userRole, // ← captured here
   passed,
   failed,
   skipped,
@@ -270,7 +273,7 @@ try {
 const runCount = history.byBranch[branch].byTestType[testType].runs.length;
 
 logger.info(
-  `[update-test-history] ✅ Appended run #${runNumber} → branch="${branch}" testType="${testType}"`,
+  `[update-test-history] ✅ Appended run #${runNumber} → branch="${branch}" testType="${testType}" userRole="${userRole}"`,
 );
 logger.info(
   `[update-test-history]    passed=${passed} failed=${failed} skipped=${skipped} passRate=${passRate}%`,
