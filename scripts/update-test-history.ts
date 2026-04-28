@@ -1,8 +1,23 @@
 /**
+ * update-test-history.ts
  *
  * Reads the merged Playwright `index.json` and appends a new entry
- * to `test-results-history.json`, scoped by TEST_TYPE so that
- * regression / sanity / dashboard / etc. trends are never mixed.
+ * to `test-results-history.json`, scoped by BRANCH → TEST_TYPE so that
+ * trends are tracked independently per branch and per test type.
+ *
+ * History shape:
+ *   {
+ *     lastUpdated: string,
+ *     byBranch: {
+ *       "environment/QA": {
+ *         byTestType: {
+ *           "regression": { testType, runs: [...] },
+ *           "sanity":     { testType, runs: [...] }
+ *         }
+ *       },
+ *       "environment/UAT": { ... }
+ *     }
+ *   }
  *
  * Usage (called from CI after merge-reports step):
  *   npx ts-node scripts/update-test-history.ts
@@ -72,9 +87,13 @@ interface TestTypeHistory {
   runs: TestRun[];
 }
 
+interface BranchHistory {
+  byTestType: Record<string, TestTypeHistory>;
+}
+
 interface HistoryFile {
   lastUpdated: string;
-  byTestType: Record<string, TestTypeHistory>;
+  byBranch: Record<string, BranchHistory>;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -132,13 +151,14 @@ const passRate =
   total > 0 ? Math.round((passed / (passed + failed)) * 1000) / 10 : 0;
 
 const testType = env("TEST_TYPE", "regression");
+const branch = env("GITHUB_REF_NAME", "unknown");
 const runNumber = parseInt(env("GITHUB_RUN_NUMBER", "0"), 10);
 
 const newRun: TestRun = {
   runNumber,
   runId: env("GITHUB_RUN_ID"),
   date: new Date().toISOString(),
-  branch: env("GITHUB_REF_NAME"),
+  branch,
   commitSha: env("GITHUB_SHA").slice(0, 7),
   env: env("ENV", "qa"),
   passed,
@@ -156,12 +176,28 @@ const newRun: TestRun = {
 // 2. Load existing history file (or start fresh)
 let history: HistoryFile = {
   lastUpdated: new Date().toISOString(),
-  byTestType: {},
+  byBranch: {},
 };
 
 if (fs.existsSync(HISTORY_FILE)) {
   try {
     history = JSON.parse(fs.readFileSync(HISTORY_FILE, "utf-8")) as HistoryFile;
+
+    // Migrate old shape (byTestType at root) to new shape (byBranch → byTestType)
+    const legacy = history as unknown as Record<string, unknown>;
+    if (legacy["byTestType"] && !history.byBranch) {
+      logger.warn(
+        "[update-test-history] ⚠️  Migrating old flat history to branch-scoped shape.",
+      );
+      history = {
+        lastUpdated: history.lastUpdated,
+        byBranch: {
+          unknown: {
+            byTestType: legacy["byTestType"] as Record<string, TestTypeHistory>,
+          },
+        },
+      };
+    }
   } catch {
     logger.warn(
       "[update-test-history] ⚠️  Corrupted history file — starting fresh.",
@@ -169,23 +205,26 @@ if (fs.existsSync(HISTORY_FILE)) {
   }
 }
 
-// 3. Append to the correct test-type bucket
-if (!history.byTestType[testType]) {
-  history.byTestType[testType] = {
+// 3. Ensure branch + testType buckets exist
+if (!history.byBranch[branch]) {
+  history.byBranch[branch] = { byTestType: {} };
+}
+
+if (!history.byBranch[branch].byTestType[testType]) {
+  history.byBranch[branch].byTestType[testType] = {
     testType,
     runs: [],
   };
 }
 
-history.byTestType[testType].runs.push(newRun);
-
-// Keep last 50 per test type
-history.byTestType[testType].runs =
-  history.byTestType[testType].runs.slice(-MAX_RUNS_PER_TYPE);
+// 4. Append run and cap at MAX_RUNS_PER_TYPE
+history.byBranch[branch].byTestType[testType].runs.push(newRun);
+history.byBranch[branch].byTestType[testType].runs =
+  history.byBranch[branch].byTestType[testType].runs.slice(-MAX_RUNS_PER_TYPE);
 
 history.lastUpdated = new Date().toISOString();
 
-// 4. Write back
+// 5. Write back
 try {
   fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2), "utf-8");
 } catch (err) {
@@ -193,13 +232,15 @@ try {
   process.exit(1);
 }
 
+const runCount = history.byBranch[branch].byTestType[testType].runs.length;
+
 logger.info(
-  `[update-test-history] ✅ Appended run #${runNumber} to testType="${testType}"`,
+  `[update-test-history] ✅ Appended run #${runNumber} → branch="${branch}" testType="${testType}"`,
 );
 logger.info(
-  `[update-test-history]    passed=${passed} failed=${failed} skipped=${skipped} passRate=${passRate}%`,
+  `[update-test-history]    passed=${passed} failed=${failed} skipped=${skipped} flaky=${flaky} passRate=${passRate}%`,
 );
 logger.info(
-  `[update-test-history]    History now has ${history.byTestType[testType].runs.length} runs for "${testType}"`,
+  `[update-test-history]    History now has ${runCount} run(s) for branch="${branch}" / testType="${testType}"`,
 );
 logger.info(`[update-test-history]    Saved to ${HISTORY_FILE}`);

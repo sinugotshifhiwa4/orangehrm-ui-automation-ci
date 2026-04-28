@@ -369,7 +369,7 @@ jobs:
           git diff --cached --quiet || git commit -m "chore: publish Playwright report for run #${{ github.run_number }}"
           git push origin gh-pages
 
-      # ── NEW: Update test-results-history.json via R2 ────────────────────
+      # ── Update test-results-history.json via R2 ─────────────────────────
       - name: Download test history from R2
         if: always()
         env:
@@ -377,7 +377,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
         run: |
           aws s3 cp \
-            s3://orangehrm-ui-automation-ci/test-results-history.json \
+            s3://orangehrm-ui-automation-ci/orangehrm-automation/test-results-history.json \
             ./test-results-history.json \
             --endpoint-url https://af1b78df22a3bdfaf204c4eca619e23d.r2.cloudflarestorage.com \
           || echo "No existing history file in R2 — will create fresh"
@@ -403,10 +403,9 @@ jobs:
         run: |
           aws s3 cp \
             ./test-results-history.json \
-            s3://orangehrm-ui-automation-ci/test-results-history.json \
+            s3://orangehrm-ui-automation-ci/orangehrm-automation/test-results-history.json \
             --endpoint-url https://af1b78df22a3bdfaf204c4eca619e23d.r2.cloudflarestorage.com
-      # ── END NEW ───────────────────────────────────────────────────────────
-
+      # ── END ──────────────────────────────────────────────────────────────
       - name: Job summary
         if: always()
         run: |
@@ -428,4 +427,4 @@ jobs:
           echo "[View full Playwright report]($PLAYWRIGHT_REPORT_URL)" >> $GITHUB_STEP_SUMMARY
           echo "[View full Allure report]($ALLURE_REPORT_URL)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📦 Test history saved to \`s3://orangehrm-ui-automation-ci/test-results-history.json\`" >> $GITHUB_STEP_SUMMARY
+          echo "📦 Test history saved to \`s3://orangehrm-ui-automation-ci/orangehrm-automation/test-results-history.json\`" >> $GITHUB_STEP_SUMMARY
