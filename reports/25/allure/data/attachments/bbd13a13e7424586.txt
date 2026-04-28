@@ -1,0 +1,4 @@
+2026-04-28T23:19:18+02:00 [info]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-28T23:19:18+02:00 [info]: Class "active" found on element
+2026-04-28T23:19:18+02:00 [info]: Verified: Dashboard is the default page with URL: /dashboard\/index/
+2026-04-28T23:19:18+02:00 [info]: Assertion Passed: Dashboard is loaded as the default page with correct URL and title
