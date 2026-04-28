@@ -1,0 +1,167 @@
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="291.0141020507813">
+<testsuite name="layers/ui/menuItems/Dashboard.spec.ts" timestamp="2026-04-28T20:32:19.796Z" hostname="general-user" tests="1" failures="1" skipped="0" time="279.423" errors="0">
+<testcase name="Dashboard Test Suite › should load dashboard as the default page after successful login" classname="layers/ui/menuItems/Dashboard.spec.ts" time="279.423">
+<system-out>
+<![CDATA[2026-04-28T22:27:11+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+
+[[ATTACHMENT|../all-blob-reports/resources/bfe1185fd1659de365c0016748e7689510636e1e.png]]
+
+[[ATTACHMENT|../all-blob-reports/resources/d07997ef52132cb056d65930ca8870d0d79aeee0.webm]]
+
+[[ATTACHMENT|../all-blob-reports/resources/156e0520ea6063e4685a079fce6cf9de28e9d0eb.markdown]]
+
+[[ATTACHMENT|../all-blob-reports/resources/a2568b197581dd7795b424486bd8e3568949f577.zip]]
+2026-04-28T22:28:45+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+
+[[ATTACHMENT|../all-blob-reports/resources/fc2d0d33f2516be68283d184d72c8776d278d792.png]]
+
+[[ATTACHMENT|../all-blob-reports/resources/b2335802493bd00996dd5d0d95d3db93f303b951.webm]]
+
+[[ATTACHMENT|../all-blob-reports/resources/48a6d59abb4838e55d16e7235e903bb4f00d4454.markdown]]
+
+[[ATTACHMENT|../all-blob-reports/resources/6b8e2bab43d54aef824bacf02527f7b0f090bcf5.zip]]
+2026-04-28T22:30:19+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+
+[[ATTACHMENT|../all-blob-reports/resources/871be19e2a43fbfdc3c43aa34ccdda105b9e2d88.png]]
+
+[[ATTACHMENT|../all-blob-reports/resources/212c32bc9106c87ae86b0ba6b4ce54c7c6b4f3eb.webm]]
+
+[[ATTACHMENT|../all-blob-reports/resources/2bc55fccbb367e6f72f12fb5658975424caa8807.markdown]]
+
+[[ATTACHMENT|../all-blob-reports/resources/3b216dbf5f42656f85df81dedc186d3fff9cc5e7.zip]]
+]]>
+</system-out>
+<failure message="expect(page).toHaveURL(expected) failed" type="expect.toHaveURL">
+<![CDATA[  [general-user] › layers/ui/menuItems/Dashboard.spec.ts:9:3 › Dashboard Test Suite › should load dashboard as the default page after successful login @regression @sanity @dashboard 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /dashboard\/index/
+    Received string:  "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+    Timeout: 90000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 90000ms
+        93 × unexpected value "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+
+
+       at ../src/layers/ui/pages/menuItems/dashboardPage.ts:47
+
+      45 |     const { expectedUrl, classAttribute } = options;
+      46 |
+    > 47 |     await expect(this.page).toHaveURL(expectedUrl);
+         |                             ^
+      48 |
+      49 |     const isDashboardActive = await this.element.hasClass(
+      50 |       this.dashboardMenuItemLink,
+        at DashboardPage.verifyDashboardIsDefaultPage (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/pages/menuItems/dashboardPage.ts:47:29)
+        at /home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests/layers/ui/menuItems/Dashboard.spec.ts:12:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/bfe1185fd1659de365c0016748e7689510636e1e.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/d07997ef52132cb056d65930ca8870d0d79aeee0.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../all-blob-reports/resources/156e0520ea6063e4685a079fce6cf9de28e9d0eb.markdown
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/a2568b197581dd7795b424486bd8e3568949f577.zip
+    Usage:
+
+        npx playwright show-trace ../all-blob-reports/resources/a2568b197581dd7795b424486bd8e3568949f577.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /dashboard\/index/
+    Received string:  "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+    Timeout: 90000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 90000ms
+        93 × unexpected value "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+
+
+       at ../src/layers/ui/pages/menuItems/dashboardPage.ts:47
+
+      45 |     const { expectedUrl, classAttribute } = options;
+      46 |
+    > 47 |     await expect(this.page).toHaveURL(expectedUrl);
+         |                             ^
+      48 |
+      49 |     const isDashboardActive = await this.element.hasClass(
+      50 |       this.dashboardMenuItemLink,
+        at DashboardPage.verifyDashboardIsDefaultPage (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/pages/menuItems/dashboardPage.ts:47:29)
+        at /home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests/layers/ui/menuItems/Dashboard.spec.ts:12:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/fc2d0d33f2516be68283d184d72c8776d278d792.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/b2335802493bd00996dd5d0d95d3db93f303b951.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../all-blob-reports/resources/48a6d59abb4838e55d16e7235e903bb4f00d4454.markdown
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/6b8e2bab43d54aef824bacf02527f7b0f090bcf5.zip
+    Usage:
+
+        npx playwright show-trace ../all-blob-reports/resources/6b8e2bab43d54aef824bacf02527f7b0f090bcf5.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /dashboard\/index/
+    Received string:  "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+    Timeout: 90000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 90000ms
+        93 × unexpected value "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+
+
+       at ../src/layers/ui/pages/menuItems/dashboardPage.ts:47
+
+      45 |     const { expectedUrl, classAttribute } = options;
+      46 |
+    > 47 |     await expect(this.page).toHaveURL(expectedUrl);
+         |                             ^
+      48 |
+      49 |     const isDashboardActive = await this.element.hasClass(
+      50 |       this.dashboardMenuItemLink,
+        at DashboardPage.verifyDashboardIsDefaultPage (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/pages/menuItems/dashboardPage.ts:47:29)
+        at /home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests/layers/ui/menuItems/Dashboard.spec.ts:12:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/871be19e2a43fbfdc3c43aa34ccdda105b9e2d88.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/212c32bc9106c87ae86b0ba6b4ce54c7c6b4f3eb.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../all-blob-reports/resources/2bc55fccbb367e6f72f12fb5658975424caa8807.markdown
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/3b216dbf5f42656f85df81dedc186d3fff9cc5e7.zip
+    Usage:
+
+        npx playwright show-trace ../all-blob-reports/resources/3b216dbf5f42656f85df81dedc186d3fff9cc5e7.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+</testsuite>
+</testsuites>
