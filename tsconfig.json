@@ -26,7 +26,8 @@
     "tests/**/*.ts",
     "fixtures/**/*.ts",
     "*.spec.ts",
-    "*.ts"
+    "*.ts",
+    "scripts/update-test-history.ts"
   ],
 
   "exclude": [
