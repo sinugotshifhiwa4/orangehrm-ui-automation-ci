@@ -1,0 +1,422 @@
+<testsuites id="" name="" tests="11" failures="1" skipped="0" errors="0" time="377.0970559082031">
+<testsuite name="layers/ui/authentication/Auth.admin-user.setup.ts" timestamp="2026-04-29T09:53:43.532Z" hostname="setup-admin-user" tests="1" failures="0" skipped="0" time="33.047" errors="0">
+<testcase name="Authenticate Admin User" classname="layers/ui/authentication/Auth.admin-user.setup.ts" time="33.047">
+<system-out>
+<![CDATA[2026-04-29T11:47:02+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:07+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:47:07+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:47:07+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:47:07+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:47:07+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:47:07+02:00 [[32minfo[39m]: invalid credentials error state is hidden
+2026-04-29T11:47:30+02:00 [[32minfo[39m]: Dashboard header state is visible
+2026-04-29T11:47:30+02:00 [[32minfo[39m]: Upgrade button state is visible
+2026-04-29T11:47:30+02:00 [[32minfo[39m]: User dropdown selector state is visible
+2026-04-29T11:47:30+02:00 [[35mdebug[39m]: Authentication state saved successfully
+2026-04-29T11:47:30+02:00 [[32minfo[39m]: Authentication session state created for role: ADMIN
+
+[[ATTACHMENT|../all-blob-reports/resources/a86095cd7d533076bc5991d914a2dcb06735fa66.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/login/InvalidLogin.spec.ts" timestamp="2026-04-29T09:53:43.532Z" hostname="admin-user" tests="2" failures="1" skipped="0" time="331.826" errors="0">
+<testcase name="Invalid Login Test Suite › should display required field errors when submitting login form without credentials" classname="layers/ui/login/InvalidLogin.spec.ts" time="9.361">
+<system-out>
+<![CDATA[2026-04-29T11:47:38+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:40+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:47:40+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:47:40+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:47:40+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:47:40+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:47:40+02:00 [[32minfo[39m]: username required error state is visible
+2026-04-29T11:47:40+02:00 [[32minfo[39m]: password required error state is visible
+2026-04-29T11:47:40+02:00 [[32minfo[39m]: Assertion Passed: Required field errors displayed when submitting login form without credentials
+
+[[ATTACHMENT|../all-blob-reports/resources/f2c4814a4071a12424fe71403e52c69d6808e89a.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Invalid Login Test Suite › should display invalid credentials error when submitting login form with incorrect username and password" classname="layers/ui/login/InvalidLogin.spec.ts" time="322.465">
+<system-out>
+<![CDATA[2026-04-29T11:47:46+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:48+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:47:48+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:47:48+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:47:48+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:47:48+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:49:18+02:00 [[31merror[39m]: {
+  "source": "verifyInvalidCredentialsErrorIsVisible",
+  "context": "Failed to verify element invalid credentials error is visible",
+  "message": "expect(locator).toBeVisible() failed",
+  "timestamp": "2026-04-29T09:49:18.619Z",
+  "environment": "qa",
+  "stack": "expect(locator).toBeVisible() failed",
+  "errorType": "ExpectError",
+  "pass": false,
+  "matcherName": "toBeVisible",
+  "expected": "visible",
+  "log": [
+    "  - Expect \"toBeVisible\" with timeout 90000ms",
+    "  - waiting for getByRole('alert').getByText('Invalid credentials')",
+    "    - waiting for\" https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate\" navigation to finish...",
+    "    - navigated to \"https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index\""
+  ]
+}
+
+[[ATTACHMENT|../all-blob-reports/resources/f756868d1c40e34006ddc320e6cceb48e447abbc.png]]
+
+[[ATTACHMENT|../all-blob-reports/resources/dc97717ff3101b68a203a48bc4ea53fde60b22e3.webm]]
+
+[[ATTACHMENT|../all-blob-reports/resources/132fb038193171ad11d6f27c4bbece81f0cd5bc6.markdown]]
+
+[[ATTACHMENT|../all-blob-reports/resources/421c5d5d8d9bc0b478dd875330afda1ec4d45a9b.zip]]
+2026-04-29T11:49:34+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:49:42+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:49:42+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:49:42+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:49:42+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:49:42+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:51:13+02:00 [[31merror[39m]: {
+  "source": "verifyInvalidCredentialsErrorIsVisible",
+  "context": "Failed to verify element invalid credentials error is visible",
+  "message": "expect(locator).toBeVisible() failed",
+  "timestamp": "2026-04-29T09:51:13.011Z",
+  "environment": "qa",
+  "stack": "expect(locator).toBeVisible() failed",
+  "errorType": "ExpectError",
+  "pass": false,
+  "matcherName": "toBeVisible",
+  "expected": "visible",
+  "log": [
+    "  - Expect \"toBeVisible\" with timeout 90000ms",
+    "  - waiting for getByRole('alert').getByText('Invalid credentials')",
+    "    - waiting for navigation to finish...",
+    "    - navigated to \"https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index\""
+  ]
+}
+
+[[ATTACHMENT|../all-blob-reports/resources/28ae08234efed3207283f346bc74340a15f09e79.png]]
+
+[[ATTACHMENT|../all-blob-reports/resources/a5065ea9980b91b9b19428dcb078caee44516537.webm]]
+
+[[ATTACHMENT|../all-blob-reports/resources/7d4e9a92aecd20a9cfc4463c552d648c80462168.markdown]]
+
+[[ATTACHMENT|../all-blob-reports/resources/a72467a5a4d3fa7398ae1bc99c4859890fb22fbf.zip]]
+2026-04-29T11:51:26+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:51:32+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:51:32+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:51:32+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:51:32+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:51:32+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:53:02+02:00 [[31merror[39m]: {
+  "source": "verifyInvalidCredentialsErrorIsVisible",
+  "context": "Failed to verify element invalid credentials error is visible",
+  "message": "expect(locator).toBeVisible() failed",
+  "timestamp": "2026-04-29T09:53:02.548Z",
+  "environment": "qa",
+  "stack": "expect(locator).toBeVisible() failed",
+  "errorType": "ExpectError",
+  "pass": false,
+  "matcherName": "toBeVisible",
+  "expected": "visible",
+  "log": [
+    "  - Expect \"toBeVisible\" with timeout 90000ms",
+    "  - waiting for getByRole('alert').getByText('Invalid credentials')",
+    "    - waiting for navigation to finish...",
+    "    - navigated to \"https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index\""
+  ]
+}
+
+[[ATTACHMENT|../all-blob-reports/resources/5d0f38bd74aee611c757a4251158243b7e5fe623.png]]
+
+[[ATTACHMENT|../all-blob-reports/resources/c111c3493ca9be9609f3105e0f10874c50818ffc.webm]]
+
+[[ATTACHMENT|../all-blob-reports/resources/7e7c767e7a0bbc647fba0ec19ceb1fea7e8418c6.markdown]]
+
+[[ATTACHMENT|../all-blob-reports/resources/9a776db76225fcb33fbbf365959679e7f293de11.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [admin-user] › layers/ui/login/InvalidLogin.spec.ts:22:3 › Invalid Login Test Suite › should display invalid credentials error when submitting login form with incorrect username and password @skip-auth @regression 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('alert').getByText('Invalid credentials')
+    Expected: visible
+    Timeout: 90000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 90000ms
+      - waiting for getByRole('alert').getByText('Invalid credentials')
+        - waiting for" https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate" navigation to finish...
+        - navigated to "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index"
+
+
+       at ../src/layers/ui/base/internal/actions/elementAssertions.ts:192
+
+      190 |             break;
+      191 |           case "visible":
+    > 192 |             await expect(element).toBeVisible();
+          |                                   ^
+      193 |             break;
+      194 |           case "hidden":
+      195 |             await expect(element).not.toBeVisible();
+        at action (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/base/internal/actions/elementAssertions.ts:192:35)
+        at ElementAssertions.performAction (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/base/internal/actions/actionBase.ts:31:28)
+        at ElementAssertions.verifyElementState (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/base/internal/actions/elementAssertions.ts:182:16)
+        at LoginPage.verifyInvalidCredentialsErrorIsVisible (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/pages/login/loginPage.ts:183:34)
+        at /home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests/layers/ui/login/InvalidLogin.spec.ts:29:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/f756868d1c40e34006ddc320e6cceb48e447abbc.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/dc97717ff3101b68a203a48bc4ea53fde60b22e3.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../all-blob-reports/resources/132fb038193171ad11d6f27c4bbece81f0cd5bc6.markdown
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/421c5d5d8d9bc0b478dd875330afda1ec4d45a9b.zip
+    Usage:
+
+        npx playwright show-trace ../all-blob-reports/resources/421c5d5d8d9bc0b478dd875330afda1ec4d45a9b.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('alert').getByText('Invalid credentials')
+    Expected: visible
+    Timeout: 90000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 90000ms
+      - waiting for getByRole('alert').getByText('Invalid credentials')
+        - waiting for navigation to finish...
+        - navigated to "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index"
+
+
+       at ../src/layers/ui/base/internal/actions/elementAssertions.ts:192
+
+      190 |             break;
+      191 |           case "visible":
+    > 192 |             await expect(element).toBeVisible();
+          |                                   ^
+      193 |             break;
+      194 |           case "hidden":
+      195 |             await expect(element).not.toBeVisible();
+        at action (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/base/internal/actions/elementAssertions.ts:192:35)
+        at ElementAssertions.performAction (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/base/internal/actions/actionBase.ts:31:28)
+        at ElementAssertions.verifyElementState (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/base/internal/actions/elementAssertions.ts:182:16)
+        at LoginPage.verifyInvalidCredentialsErrorIsVisible (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/pages/login/loginPage.ts:183:34)
+        at /home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests/layers/ui/login/InvalidLogin.spec.ts:29:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/28ae08234efed3207283f346bc74340a15f09e79.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/a5065ea9980b91b9b19428dcb078caee44516537.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../all-blob-reports/resources/7d4e9a92aecd20a9cfc4463c552d648c80462168.markdown
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/a72467a5a4d3fa7398ae1bc99c4859890fb22fbf.zip
+    Usage:
+
+        npx playwright show-trace ../all-blob-reports/resources/a72467a5a4d3fa7398ae1bc99c4859890fb22fbf.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('alert').getByText('Invalid credentials')
+    Expected: visible
+    Timeout: 90000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 90000ms
+      - waiting for getByRole('alert').getByText('Invalid credentials')
+        - waiting for navigation to finish...
+        - navigated to "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index"
+
+
+       at ../src/layers/ui/base/internal/actions/elementAssertions.ts:192
+
+      190 |             break;
+      191 |           case "visible":
+    > 192 |             await expect(element).toBeVisible();
+          |                                   ^
+      193 |             break;
+      194 |           case "hidden":
+      195 |             await expect(element).not.toBeVisible();
+        at action (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/base/internal/actions/elementAssertions.ts:192:35)
+        at ElementAssertions.performAction (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/base/internal/actions/actionBase.ts:31:28)
+        at ElementAssertions.verifyElementState (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/base/internal/actions/elementAssertions.ts:182:16)
+        at LoginPage.verifyInvalidCredentialsErrorIsVisible (/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/layers/ui/pages/login/loginPage.ts:183:34)
+        at /home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests/layers/ui/login/InvalidLogin.spec.ts:29:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/5d0f38bd74aee611c757a4251158243b7e5fe623.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/c111c3493ca9be9609f3105e0f10874c50818ffc.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../all-blob-reports/resources/7e7c767e7a0bbc647fba0ec19ceb1fea7e8418c6.markdown
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../all-blob-reports/resources/9a776db76225fcb33fbbf365959679e7f293de11.zip
+    Usage:
+
+        npx playwright show-trace ../all-blob-reports/resources/9a776db76225fcb33fbbf365959679e7f293de11.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/authentication/Auth.admin-user.setup.ts" timestamp="2026-04-29T09:53:43.532Z" hostname="setup-admin-user" tests="1" failures="0" skipped="0" time="30.069" errors="0">
+<testcase name="Authenticate Admin User" classname="layers/ui/authentication/Auth.admin-user.setup.ts" time="30.069">
+<system-out>
+<![CDATA[2026-04-29T11:46:56+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:01+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:47:01+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:47:01+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:47:01+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:47:01+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:47:01+02:00 [[32minfo[39m]: invalid credentials error state is hidden
+2026-04-29T11:47:19+02:00 [[32minfo[39m]: Dashboard header state is visible
+2026-04-29T11:47:19+02:00 [[32minfo[39m]: Upgrade button state is visible
+2026-04-29T11:47:19+02:00 [[32minfo[39m]: User dropdown selector state is visible
+2026-04-29T11:47:19+02:00 [[35mdebug[39m]: Authentication state saved successfully
+2026-04-29T11:47:19+02:00 [[32minfo[39m]: Authentication session state created for role: ADMIN
+
+[[ATTACHMENT|../all-blob-reports/resources/4d843fe85db42d3dceb08f95a0e529f166132d27.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/login/InvalidLogin.spec.ts" timestamp="2026-04-29T09:53:43.532Z" hostname="admin-user" tests="2" failures="0" skipped="0" time="44.876" errors="0">
+<testcase name="Invalid Login Test Suite › should display invalid credentials error when submitting login form with incorrect username" classname="layers/ui/login/InvalidLogin.spec.ts" time="24.295">
+<system-out>
+<![CDATA[2026-04-29T11:47:27+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:32+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:47:32+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:47:32+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:47:32+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:47:32+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:47:44+02:00 [[32minfo[39m]: invalid credentials error state is visible
+2026-04-29T11:47:44+02:00 [[32minfo[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect username
+
+[[ATTACHMENT|../all-blob-reports/resources/4e4f1682aa1345568057527f4464f63ce498283b.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Invalid Login Test Suite › should display invalid credentials error when submitting login form with incorrect password" classname="layers/ui/login/InvalidLogin.spec.ts" time="20.581">
+<system-out>
+<![CDATA[2026-04-29T11:47:48+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:52+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:47:52+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:47:52+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:47:52+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:47:52+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:48:05+02:00 [[32minfo[39m]: invalid credentials error state is visible
+2026-04-29T11:48:05+02:00 [[32minfo[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect password
+
+[[ATTACHMENT|../all-blob-reports/resources/d1a833aaef958619b48a202c4c42049c6272deae.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/authentication/Auth.admin-user.setup.ts" timestamp="2026-04-29T09:53:43.532Z" hostname="setup-admin-user" tests="1" failures="0" skipped="0" time="35.509" errors="0">
+<testcase name="Authenticate Admin User" classname="layers/ui/authentication/Auth.admin-user.setup.ts" time="35.509">
+<system-out>
+<![CDATA[2026-04-29T11:47:10+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: invalid credentials error state is hidden
+2026-04-29T11:47:37+02:00 [[32minfo[39m]: Dashboard header state is visible
+2026-04-29T11:47:37+02:00 [[32minfo[39m]: Upgrade button state is visible
+2026-04-29T11:47:37+02:00 [[32minfo[39m]: User dropdown selector state is visible
+2026-04-29T11:47:37+02:00 [[35mdebug[39m]: Authentication state saved successfully
+2026-04-29T11:47:37+02:00 [[32minfo[39m]: Authentication session state created for role: ADMIN
+
+[[ATTACHMENT|../all-blob-reports/resources/42216f8f7d8863a368d2086b1b8a235e7f3600c9.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/login/ValidLogin.spec.ts" timestamp="2026-04-29T09:53:43.532Z" hostname="admin-user" tests="2" failures="0" skipped="0" time="32.551" errors="0">
+<testcase name="Valid Login Test Suite › should display invalid credentials error when submitting login form with incorrect username" classname="layers/ui/login/ValidLogin.spec.ts" time="18.184">
+<system-out>
+<![CDATA[2026-04-29T11:47:52+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:56+02:00 [[32minfo[39m]: Dashboard header state is visible
+2026-04-29T11:47:56+02:00 [[32minfo[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect username
+
+[[ATTACHMENT|../all-blob-reports/resources/efe7fd7ff3937380a6f2d22fa9cb0f8b374587c7.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Valid Login Test Suite › verify page title is displayed correctly" classname="layers/ui/login/ValidLogin.spec.ts" time="14.367">
+<system-out>
+<![CDATA[2026-04-29T11:48:11+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:48:11+02:00 [[32minfo[39m]: Retrieved page title
+2026-04-29T11:48:11+02:00 [[32minfo[39m]: Verified: Page title 'OrangeHRM' matches expected 'OrangeHRM'
+2026-04-29T11:48:11+02:00 [[32minfo[39m]: Assertion Passed: Page title is correctly displayed as "OrangeHRM"
+
+[[ATTACHMENT|../all-blob-reports/resources/043217353dc21aed50fd61627ff2fd9cf492910c.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/authentication/Auth.admin-user.setup.ts" timestamp="2026-04-29T09:53:43.532Z" hostname="setup-admin-user" tests="1" failures="0" skipped="0" time="30.959" errors="0">
+<testcase name="Authenticate Admin User" classname="layers/ui/authentication/Auth.admin-user.setup.ts" time="30.959">
+<system-out>
+<![CDATA[2026-04-29T11:47:12+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: company logo state is visible
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: login title state is visible
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: Clicked on login button
+2026-04-29T11:47:17+02:00 [[32minfo[39m]: invalid credentials error state is hidden
+2026-04-29T11:47:34+02:00 [[32minfo[39m]: Dashboard header state is visible
+2026-04-29T11:47:34+02:00 [[32minfo[39m]: Upgrade button state is visible
+2026-04-29T11:47:34+02:00 [[32minfo[39m]: User dropdown selector state is visible
+2026-04-29T11:47:34+02:00 [[35mdebug[39m]: Authentication state saved successfully
+2026-04-29T11:47:34+02:00 [[32minfo[39m]: Authentication session state created for role: ADMIN
+
+[[ATTACHMENT|../all-blob-reports/resources/9f096fa45ef481b85cedd7a31dc13a1070456e94.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/menuItems/Dashboard.spec.ts" timestamp="2026-04-29T09:53:43.532Z" hostname="admin-user" tests="1" failures="0" skipped="0" time="14.743" errors="0">
+<testcase name="Dashboard Test Suite › should load dashboard as the default page after successful login" classname="layers/ui/menuItems/Dashboard.spec.ts" time="14.743">
+<system-out>
+<![CDATA[2026-04-29T11:47:47+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-04-29T11:47:49+02:00 [[32minfo[39m]: Class "active" found on element
+2026-04-29T11:47:49+02:00 [[32minfo[39m]: Verified: Dashboard is the default page with URL: /dashboard\/index/
+2026-04-29T11:47:49+02:00 [[32minfo[39m]: Assertion Passed: Dashboard is loaded as the default page with correct URL and title
+
+[[ATTACHMENT|../all-blob-reports/resources/9716f62541ff8b40ce9c160477d79a7b46419983.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
