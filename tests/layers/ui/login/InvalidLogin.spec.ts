@@ -22,8 +22,8 @@ test.describe("Invalid Login Test Suite", { tag: ["@skip-auth", "@regression"] }
   test("should display invalid credentials error when submitting login form with incorrect username and password", async ({
     loginPage,
   }) => {
-    const invalidUsername = "Admin";
-    const invalidPassword = "admin123";
+    const invalidUsername = "invalidAdminUser";
+    const invalidPassword = "invalidAdminPass";
 
     await loginPage.login({ username: invalidUsername, password: invalidPassword });
     await loginPage.verifyInvalidCredentialsErrorIsVisible();
