@@ -15,7 +15,7 @@ test.describe("Valid Login Test Suite", { tag: ["@regression", "@sanity"] }, () 
     );
   });
 
-  test("verify page title is displayed correctly", { tag: "@skip-auth" }, async ({ loginPage }) => {
+  test("verify page title is displayed correctly", async ({ loginPage }) => {
     const expectedTitle = "OrangeHRM";
 
     await loginPage.verifyPageTitleIsDisplayedCorrectly({

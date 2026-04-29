@@ -265,7 +265,6 @@ function truncate(s: string, maxLen: number): string {
 
 /** Strip failedTests from runs outside the detail window (in-place). */
 function applyDetailWindow(runs: TestRun[]): void {
-  // runs is newest-first; strip everything beyond DETAIL_WINDOW
   for (let i = DETAIL_WINDOW; i < runs.length; i++) {
     if (runs[i].failedTests.length > 0 || !runs[i].failedTestsStripped) {
       runs[i].failedTests = [];
@@ -291,92 +290,175 @@ interface ParseResult {
   failedTests: FailedTest[];
 }
 
+/**
+ * Extracts failed testcase entries from a single <testsuite> node.
+ * Playwright JUnit XML structure:
+ *
+ *   <testsuites>
+ *     <testsuite name="file.spec.ts" ...>        ← outer suite (file level)
+ *       <testsuite name="Describe block" ...>    ← inner suite (describe level)
+ *         <testcase name="test title" ...>
+ *           <failure message="...">stack</failure>
+ *         </testcase>
+ *       </testsuite>
+ *     </testsuite>
+ *   </testsuites>
+ *
+ * This function recurses through nested <testsuite> nodes so no testcase
+ * is missed regardless of nesting depth.
+ */
+function collectFailedTestcases(
+  suite: Record<string, unknown>,
+  failedTests: FailedTest[],
+): void {
+  // ── Recurse into nested <testsuite> children first ──────────────────────
+  const nested = suite["testsuite"];
+  if (nested) {
+    const nestedArr = Array.isArray(nested) ? nested : [nested];
+    for (const child of nestedArr) {
+      if (child && typeof child === "object") {
+        collectFailedTestcases(child as Record<string, unknown>, failedTests);
+      }
+    }
+  }
+
+  // ── Process <testcase> children at this level ────────────────────────────
+  const testcases = suite["testcase"];
+  if (!testcases) return;
+
+  const caseArray = Array.isArray(testcases) ? testcases : [testcases];
+
+  for (const tc of caseArray) {
+    if (typeof tc !== "object" || tc === null) continue;
+    if (failedTests.length >= MAX_FAILED_TESTS_STORED) break;
+
+    const tcObj = tc as Record<string, unknown>;
+
+    const hasFailure =
+      tcObj["failure"] != null &&
+      (Array.isArray(tcObj["failure"])
+        ? (tcObj["failure"] as unknown[]).length > 0
+        : true);
+    const hasError =
+      tcObj["error"] != null &&
+      (Array.isArray(tcObj["error"])
+        ? (tcObj["error"] as unknown[]).length > 0
+        : true);
+
+    if (!hasFailure && !hasError) continue;
+
+    const kind: "failure" | "error" = hasFailure ? "failure" : "error";
+    const problemNode = hasFailure ? tcObj["failure"] : tcObj["error"];
+
+    // ── Extract failure message ────────────────────────────────────────────
+    // Playwright writes the assertion message in @_message and the full stack
+    // trace as the text body. We prefer @_message (concise) and fall back to
+    // the body text so the dashboard always shows something useful.
+    let rawMessage = "";
+    const firstNode = Array.isArray(problemNode)
+      ? (problemNode as unknown[])[0]
+      : problemNode;
+
+    if (typeof firstNode === "string") {
+      rawMessage = firstNode;
+    } else if (firstNode && typeof firstNode === "object") {
+      const nodeObj = firstNode as Record<string, unknown>;
+      const msgAttr = attrStr(nodeObj["@_message"]);
+      const bodyText = attrStr(nodeObj["#text"]);
+      // Prefer the short @message attribute; fall back to the stack body
+      rawMessage = msgAttr || bodyText;
+    }
+
+    // ── Build test title ───────────────────────────────────────────────────
+    // Playwright sets @_classname to the spec file path and @_name to the
+    // full test title (describe > test).  Combining them gives a unique,
+    // human-readable identifier for the dashboard.
+    const testName = attrStr(tcObj["@_name"]);
+    const classname = attrStr(tcObj["@_classname"]);
+    const durationSec = parseFloat(attrStr(tcObj["@_time"]) || "0");
+
+    failedTests.push({
+      name: truncate(testName, 200),
+      classname: truncate(classname, 200),
+      failureMessage: truncate(rawMessage, 500),
+      durationSec: Math.round(durationSec * 1000) / 1000,
+      kind,
+    });
+  }
+}
+
 function parseJUnitXml(xmlPath: string): ParseResult {
   const raw = fs.readFileSync(xmlPath, "utf-8");
+
+  // Log a snippet so we can debug structure issues in CI if needed
+  logger.info(
+    `[update-test-history] Parsing JUnit XML (${raw.length} bytes): ${xmlPath}`,
+  );
+
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "@_",
     textNodeName: "#text",
+    // Treat these tags as arrays even when there is only one child — prevents
+    // fast-xml-parser from collapsing single-item arrays into plain objects.
     isArray: (tagName) =>
-      ["testsuite", "testcase", "failure", "error"].includes(tagName),
+      ["testsuites", "testsuite", "testcase", "failure", "error"].includes(
+        tagName,
+      ),
   });
   const parsed = parser.parse(raw);
 
-  const root = parsed["testsuites"] ?? parsed["testsuite"];
+  // ── Locate the root element ──────────────────────────────────────────────
+  // Playwright can emit either <testsuites> (merged report) or a bare
+  // <testsuite> (single shard).  Handle both.
+  const rootSuites: Array<Record<string, unknown>> = [];
 
+  if (parsed["testsuites"]) {
+    const ts = parsed["testsuites"];
+    const tsArr = Array.isArray(ts) ? ts : [ts];
+    for (const tsItem of tsArr) {
+      if (tsItem && typeof tsItem === "object") {
+        const inner = (tsItem as Record<string, unknown>)["testsuite"];
+        if (inner) {
+          const innerArr = Array.isArray(inner) ? inner : [inner];
+          rootSuites.push(...(innerArr as Array<Record<string, unknown>>));
+        }
+      }
+    }
+  } else if (parsed["testsuite"]) {
+    const ts = parsed["testsuite"];
+    const tsArr = Array.isArray(ts) ? ts : [ts];
+    rootSuites.push(...(tsArr as Array<Record<string, unknown>>));
+  }
+
+  logger.info(
+    `[update-test-history] Found ${rootSuites.length} top-level testsuite(s)`,
+  );
+
+  // ── Aggregate suite-level counters ───────────────────────────────────────
   let tests = 0;
   let failures = 0;
   let errors = 0;
   let skipped = 0;
   let duration = 0;
-  const failedTests: FailedTest[] = [];
 
-  const processSuite = (suite: Record<string, unknown>) => {
+  for (const suite of rootSuites) {
     tests += parseInt(attrStr(suite["@_tests"]) || "0", 10);
     failures += parseInt(attrStr(suite["@_failures"]) || "0", 10);
     errors += parseInt(attrStr(suite["@_errors"]) || "0", 10);
     skipped += parseInt(attrStr(suite["@_skipped"]) || "0", 10);
     duration += parseFloat(attrStr(suite["@_time"]) || "0");
-
-    const testcases = suite["testcase"];
-    if (!testcases) return;
-
-    const caseArray = Array.isArray(testcases) ? testcases : [testcases];
-
-    for (const tc of caseArray) {
-      if (typeof tc !== "object" || tc === null) continue;
-      const tcObj = tc as Record<string, unknown>;
-
-      const hasFailure =
-        tcObj["failure"] != null &&
-        (Array.isArray(tcObj["failure"])
-          ? (tcObj["failure"] as unknown[]).length > 0
-          : true);
-      const hasError =
-        tcObj["error"] != null &&
-        (Array.isArray(tcObj["error"])
-          ? (tcObj["error"] as unknown[]).length > 0
-          : true);
-
-      if (!hasFailure && !hasError) continue;
-      if (failedTests.length >= MAX_FAILED_TESTS_STORED) continue;
-
-      const kind: "failure" | "error" = hasFailure ? "failure" : "error";
-      const problemNode = hasFailure ? tcObj["failure"] : tcObj["error"];
-
-      let rawMessage = "";
-      const firstNode = Array.isArray(problemNode)
-        ? (problemNode as unknown[])[0]
-        : problemNode;
-
-      if (typeof firstNode === "string") {
-        rawMessage = firstNode;
-      } else if (firstNode && typeof firstNode === "object") {
-        const nodeObj = firstNode as Record<string, unknown>;
-        const msgAttr = attrStr(nodeObj["@_message"]);
-        const bodyText = attrStr(nodeObj["#text"]);
-        rawMessage = msgAttr || bodyText;
-      }
-
-      const durationSec = parseFloat(attrStr(tcObj["@_time"]) || "0");
-
-      failedTests.push({
-        name: truncate(attrStr(tcObj["@_name"]), 200),
-        classname: truncate(attrStr(tcObj["@_classname"]), 200),
-        failureMessage: truncate(rawMessage, 500),
-        durationSec: Math.round(durationSec * 1000) / 1000,
-        kind,
-      });
-    }
-  };
-
-  if (root?.["testsuite"]) {
-    const inner = root["testsuite"];
-    if (Array.isArray(inner)) inner.forEach(processSuite);
-    else processSuite(inner as Record<string, unknown>);
-  } else if (root) {
-    processSuite(root as Record<string, unknown>);
   }
+
+  // ── Collect failed testcases recursively across all suites ───────────────
+  const failedTests: FailedTest[] = [];
+  for (const suite of rootSuites) {
+    collectFailedTestcases(suite, failedTests);
+  }
+
+  logger.info(
+    `[update-test-history] XML parse complete — tests=${tests} failures=${failures} errors=${errors} skipped=${skipped} failedTestsCaptured=${failedTests.length}`,
+  );
 
   const totalFailed = failures + errors;
   const passed = Math.max(0, tests - totalFailed - skipped);
@@ -564,6 +646,17 @@ logger.info(
       : ""
   }`,
 );
+if (failedTests.length > 0) {
+  logger.info(`[update-test-history]    Failed tests:`);
+  for (const ft of failedTests) {
+    logger.info(
+      `[update-test-history]      • [${ft.kind}] ${ft.name} (${ft.durationSec}s)`,
+    );
+    logger.info(
+      `[update-test-history]        ${ft.failureMessage.slice(0, 120)}`,
+    );
+  }
+}
 logger.info(`[update-test-history]    reportUrl: ${reportUrl}`);
 logger.info(`[update-test-history]    allureUrl: ${allureUrl}`);
 logger.info(
