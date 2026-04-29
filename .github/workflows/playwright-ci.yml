@@ -286,7 +286,8 @@ jobs:
           mkdir -p playwright-report
           PLAYWRIGHT_HTML_REPORT=playwright-report \
           PLAYWRIGHT_JUNIT_OUTPUT_NAME=playwright-report/results.xml \
-          npx playwright merge-reports --reporter=html,junit ./all-blob-reports
+          PLAYWRIGHT_JSON_OUTPUT_NAME=playwright-report/results.json \
+          npx playwright merge-reports --reporter=html,junit,json ./all-blob-reports
 
       - name: Generate Allure report
         run: |
@@ -428,7 +429,6 @@ jobs:
 
           echo "Build reports uploaded to: $R2_BASE"
       # ── END ──────────────────────────────────────────────────────────────
-
       - name: Job summary
         if: always()
         run: |
