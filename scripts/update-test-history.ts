@@ -5,32 +5,70 @@
  * to `test-results-history.json`, scoped by BRANCH → TEST_TYPE so that
  * trends are tracked independently per branch and per test type.
  *
- * History shape:
- *   {
- *     lastUpdated: string,
- *     byBranch: {
- *       "develop": {
- *         byTestType: {
- *           "regression": { testType, runs: [...] },
- *           "sanity":     { testType, runs: [...] }
- *         }
- *       }
- *     }
- *   }
+ * ── Scalability design (500+ runs) ─────────────────────────────────────────
  *
- * Usage (called from CI after merge-reports step):
- *   npx ts-node scripts/update-test-history.ts
+ *  The file uses THREE tiers instead of one flat array:
  *
- * Required env vars (all available in your existing workflow):
- *   TEST_TYPE        - regression | sanity | dashboard | authenticate | skip-auth
- *   ENV              - qa | uat | preprod
- *   USER_ROLE        - admin-user | general-user
- *   GITHUB_RUN_NUMBER
- *   GITHUB_RUN_ID
- *   GITHUB_REF_NAME  - branch name
- *   GITHUB_SHA
- *   GITHUB_REPOSITORY
- *   GITHUB_REPOSITORY_OWNER
+ *  1. `meta`        — top-level stats (total run count, last updated, etc.)
+ *                     Always tiny; safe to read on every page load.
+ *
+ *  2. `index`       — lightweight summary rows (no failedTests) sorted newest-
+ *                     first, capped at MAX_INDEX_RUNS.  The dashboard reads
+ *                     ONLY this for list views, charts, and filters — it never
+ *                     needs to touch the full detail tier unless the user
+ *                     drills into a specific run.
+ *
+ *  3. `byBranch`    — full detail rows (including failedTests) scoped by
+ *                     branch → testType, capped at MAX_RUNS_PER_TYPE per
+ *                     bucket.  failedTests are stripped from runs that fall
+ *                     outside the DETAIL_WINDOW newest entries to keep the
+ *                     file size predictable even with large suites.
+ *
+ *  This means:
+ *    • A dashboard rendering 200 rows reads ~200 small objects, not 500+ large ones.
+ *    • Detailed failure info is available for the most recent runs per bucket.
+ *    • The JSON file grows sub-linearly as run counts increase.
+ *
+ * ── History shape ──────────────────────────────────────────────────────────
+ *
+ *  {
+ *    meta: {
+ *      lastUpdated: string,
+ *      totalRunsEver: number,
+ *      indexSize: number,
+ *    },
+ *
+ *    // ── TIER 2: lightweight index (no failedTests) ──
+ *    index: RunSummary[],          // newest-first, capped at MAX_INDEX_RUNS
+ *
+ *    // ── TIER 3: full detail, scoped ──
+ *    byBranch: {
+ *      "<branch>": {
+ *        byTestType: {
+ *          "<testType>": {
+ *            testType: string,
+ *            runs: TestRun[],     // newest-first, capped at MAX_RUNS_PER_TYPE
+ *          }
+ *        }
+ *      }
+ *    }
+ *  }
+ *
+ * ── Usage ──────────────────────────────────────────────────────────────────
+ *
+ *  npx ts-node scripts/update-test-history.ts
+ *
+ * ── Required env vars ──────────────────────────────────────────────────────
+ *
+ *  TEST_TYPE          regression | sanity | dashboard | authenticate | skip-auth
+ *  ENV                qa | uat | preprod
+ *  USER_ROLE          admin-user | general-user
+ *  GITHUB_RUN_NUMBER
+ *  GITHUB_RUN_ID
+ *  GITHUB_REF_NAME    branch name
+ *  GITHUB_SHA
+ *  GITHUB_REPOSITORY
+ *  GITHUB_REPOSITORY_OWNER
  */
 
 import fs from "fs";
@@ -38,7 +76,7 @@ import path from "path";
 import { XMLParser } from "fast-xml-parser";
 import winston from "winston";
 
-// ─── Local logger ─────────────────────────────────────────────────────────────
+// ─── Logger ───────────────────────────────────────────────────────────────────
 
 const logger = winston.createLogger({
   level: "info",
@@ -51,60 +89,75 @@ const logger = winston.createLogger({
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-/**
- * A single failed (or flaky) test case captured from the JUnit XML.
- * Stored inside each TestRun so the dashboard can show "which tests failed".
- */
+/** Stored inside each TestRun — full detail, available for recent runs only. */
 interface FailedTest {
-  /** Full test title, e.g. "Login > should reject invalid credentials" */
+  /** Full test title e.g. "Login > should reject invalid credentials" */
   name: string;
-  /**
-   * Class / file path reported by Playwright JUnit output.
-   * Typically the spec file path, e.g. "tests/auth/login.spec.ts".
-   */
+  /** Spec file path reported by Playwright JUnit output. */
   classname: string;
-  /**
-   * First line of the <failure> or <error> message — trimmed to 500 chars
-   * so the history file stays compact while still being diagnostic.
-   */
+  /** First 500 chars of the <failure>/<error> message. */
   failureMessage: string;
-  /**
-   * Duration of this individual test case in seconds (from the JUnit
-   * `time` attribute), rounded to 3 decimal places.
-   */
+  /** Duration of this individual test case in seconds. */
   durationSec: number;
-  /**
-   * "failure" = assertion failure; "error" = unexpected error/exception.
-   * Mirrors the JUnit element name so the dashboard can style them differently.
-   */
+  /** "failure" = assertion; "error" = unexpected exception. */
   kind: "failure" | "error";
 }
 
+/**
+ * TIER 3 — full detail row, stored in byBranch buckets.
+ * `failedTests` may be stripped (set to []) on older runs to save space.
+ */
 interface TestRun {
   runNumber: number;
   runId: string;
+  /** ISO date string */
   date: string;
+  /** Unix ms — used for sorting without re-parsing date strings */
+  timestamp: number;
+
   branch: string;
   commitSha: string;
+
   env: string;
-  userRole: string; // admin-user | general-user
+  testType: string;
+  userRole: string;
+
   passed: number;
   failed: number;
   skipped: number;
   flaky: number;
   total: number;
-  passRate: number; // 0–100
+
+  passRate: number;
+  /** Derived: "PASS" when failed === 0, else "FAIL" */
+  status: "PASS" | "FAIL";
+
   durationMs: number;
-  durationMin: string; // human-readable "2m 34s"
+  /** Human-readable e.g. "2m 34s" */
+  durationMin: string;
+
   reportUrl: string;
   allureUrl: string;
+
   /**
-   * Per-test failure details parsed from the JUnit XML.
-   * Empty array when all tests pass. Capped at MAX_FAILED_TESTS_STORED
-   * entries to keep the history file size predictable.
+   * Per-test failure details.  Present for runs within DETAIL_WINDOW;
+   * stripped (empty array) on older runs to keep file size bounded.
    */
   failedTests: FailedTest[];
+  /**
+   * True when failedTests was stripped due to age.
+   * The UI can show "details unavailable for this run" instead of
+   * misleadingly showing an empty list.
+   */
+  failedTestsStripped?: boolean;
 }
+
+/**
+ * TIER 2 — lightweight summary row stored in the top-level index.
+ * Identical to TestRun but without the bulky failedTests array.
+ * Used by the dashboard for list rendering, charts, and filtering.
+ */
+type RunSummary = Omit<TestRun, "failedTests" | "failedTestsStripped">;
 
 interface TestTypeHistory {
   testType: string;
@@ -115,8 +168,19 @@ interface BranchHistory {
   byTestType: Record<string, TestTypeHistory>;
 }
 
-interface HistoryFile {
+interface FileMeta {
   lastUpdated: string;
+  /** Rolling counter — never resets, useful for "total runs ever" display. */
+  totalRunsEver: number;
+  /** Current length of the index array — avoids a .length call in the UI. */
+  indexSize: number;
+}
+
+interface HistoryFile {
+  meta: FileMeta;
+  /** TIER 2: lightweight summaries, newest-first, capped at MAX_INDEX_RUNS. */
+  index: RunSummary[];
+  /** TIER 3: full detail scoped by branch → testType. */
   byBranch: Record<string, BranchHistory>;
 }
 
@@ -124,12 +188,28 @@ interface HistoryFile {
 
 const HISTORY_FILE = path.resolve("./test-results-history.json");
 const JUNIT_XML = path.resolve("./playwright-report/results.xml");
-const MAX_RUNS_PER_TYPE = 50;
+
 /**
- * Hard cap on the number of failed-test objects stored per run.
- * Prevents very large suites from bloating the history file.
- * The dashboard will show "and N more…" when this limit is hit.
+ * How many lightweight summary rows to keep in the top-level index.
+ * The dashboard uses this for all list views and charts — bump if you need
+ * a longer trend window visible without branch filtering.
  */
+const MAX_INDEX_RUNS = 200;
+
+/**
+ * How many full-detail runs to keep per branch+testType bucket.
+ * Each bucket is independent, so total storage = buckets × MAX_RUNS_PER_TYPE.
+ */
+const MAX_RUNS_PER_TYPE = 50;
+
+/**
+ * How many of the newest runs (per bucket) keep their failedTests array.
+ * Older runs beyond this window have failedTests stripped to [] to save space.
+ * Must be ≤ MAX_RUNS_PER_TYPE.
+ */
+const DETAIL_WINDOW = 20;
+
+/** Hard cap on failedTests entries per run to prevent huge suites bloating the file. */
 const MAX_FAILED_TESTS_STORED = 50;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -153,29 +233,39 @@ function buildReportUrl(runNumber: number, sub?: string): string {
   return sub ? `${base}/${sub}` : `${base}/index.html`;
 }
 
-/**
- * Safely extract a plain string from a JUnit attribute or text node.
- * fast-xml-parser may return numbers, booleans, or objects; normalise them all.
- */
 function attrStr(value: unknown): string {
   if (value == null) return "";
   if (typeof value === "string") return value;
   if (typeof value === "number" || typeof value === "boolean")
     return String(value);
-  // Objects (e.g. nested XML nodes) are not useful as strings — return empty.
   return "";
 }
 
-/**
- * Truncate a string to `maxLen` characters, appending "…" if truncated.
- */
 function truncate(s: string, maxLen: number): string {
   const trimmed = s.trim();
   if (trimmed.length <= maxLen) return trimmed;
   return trimmed.slice(0, maxLen - 1) + "…";
 }
 
-// ─── Parse JUnit XML ─────────────────────────────────────────────────────────
+/** Strip failedTests from runs outside the detail window (in-place). */
+function applyDetailWindow(runs: TestRun[]): void {
+  // runs is newest-first; strip everything beyond DETAIL_WINDOW
+  for (let i = DETAIL_WINDOW; i < runs.length; i++) {
+    if (runs[i].failedTests.length > 0 || !runs[i].failedTestsStripped) {
+      runs[i].failedTests = [];
+      runs[i].failedTestsStripped = true;
+    }
+  }
+}
+
+/** Build a RunSummary from a TestRun (drop the failedTests fields). */
+function toSummary(run: TestRun): RunSummary {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { failedTests, failedTestsStripped, ...summary } = run;
+  return summary;
+}
+
+// ─── Parse JUnit XML ──────────────────────────────────────────────────────────
 
 interface ParseResult {
   passed: number;
@@ -190,25 +280,21 @@ function parseJUnitXml(xmlPath: string): ParseResult {
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "@_",
-    // Ensure text content of elements (e.g. <failure>) is accessible.
     textNodeName: "#text",
-    // Keep single-child arrays as arrays so we can always iterate.
     isArray: (tagName) =>
       ["testsuite", "testcase", "failure", "error"].includes(tagName),
   });
   const parsed = parser.parse(raw);
 
-  // JUnit XML can have a single <testsuite> or a <testsuites> wrapper.
   const root = parsed["testsuites"] ?? parsed["testsuite"];
 
   let tests = 0;
   let failures = 0;
   let errors = 0;
   let skipped = 0;
-  let duration = 0; // seconds
+  let duration = 0;
   const failedTests: FailedTest[] = [];
 
-  // ── Walk every <testsuite> ──────────────────────────────────────────────
   const processSuite = (suite: Record<string, unknown>) => {
     tests += parseInt(attrStr(suite["@_tests"]) || "0", 10);
     failures += parseInt(attrStr(suite["@_failures"]) || "0", 10);
@@ -216,7 +302,6 @@ function parseJUnitXml(xmlPath: string): ParseResult {
     skipped += parseInt(attrStr(suite["@_skipped"]) || "0", 10);
     duration += parseFloat(attrStr(suite["@_time"]) || "0");
 
-    // ── Walk every <testcase> inside this suite ───────────────────────────
     const testcases = suite["testcase"];
     if (!testcases) return;
 
@@ -243,11 +328,6 @@ function parseJUnitXml(xmlPath: string): ParseResult {
       const kind: "failure" | "error" = hasFailure ? "failure" : "error";
       const problemNode = hasFailure ? tcObj["failure"] : tcObj["error"];
 
-      // Extract the failure/error message text.
-      // fast-xml-parser may give us:
-      //   - a string (text-only element)
-      //   - an object with a "#text" key (mixed content)
-      //   - an array of any of the above (multiple <failure> children)
       let rawMessage = "";
       const firstNode = Array.isArray(problemNode)
         ? (problemNode as unknown[])[0]
@@ -257,21 +337,17 @@ function parseJUnitXml(xmlPath: string): ParseResult {
         rawMessage = firstNode;
       } else if (firstNode && typeof firstNode === "object") {
         const nodeObj = firstNode as Record<string, unknown>;
-        // Prefer the @_message attribute (short summary) if present.
         const msgAttr = attrStr(nodeObj["@_message"]);
         const bodyText = attrStr(nodeObj["#text"]);
         rawMessage = msgAttr || bodyText;
       }
-
-      // Keep only the first 500 chars — enough context, not too much noise.
-      const failureMessage = truncate(rawMessage, 500);
 
       const durationSec = parseFloat(attrStr(tcObj["@_time"]) || "0");
 
       failedTests.push({
         name: truncate(attrStr(tcObj["@_name"]), 200),
         classname: truncate(attrStr(tcObj["@_classname"]), 200),
-        failureMessage,
+        failureMessage: truncate(rawMessage, 500),
         durationSec: Math.round(durationSec * 1000) / 1000,
         kind,
       });
@@ -279,15 +355,10 @@ function parseJUnitXml(xmlPath: string): ParseResult {
   };
 
   if (root?.["testsuite"]) {
-    // <testsuites> wrapper with multiple <testsuite> children.
     const inner = root["testsuite"];
-    if (Array.isArray(inner)) {
-      inner.forEach(processSuite);
-    } else {
-      processSuite(inner as Record<string, unknown>);
-    }
+    if (Array.isArray(inner)) inner.forEach(processSuite);
+    else processSuite(inner as Record<string, unknown>);
   } else if (root) {
-    // Single <testsuite> at root.
     processSuite(root as Record<string, unknown>);
   }
 
@@ -305,7 +376,7 @@ function parseJUnitXml(xmlPath: string): ParseResult {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
-// 1. Read and parse results.xml
+// 1. Parse results.xml
 if (!fs.existsSync(JUNIT_XML)) {
   logger.error(`[update-test-history] ❌ Cannot find ${JUNIT_XML}`);
   process.exit(1);
@@ -332,52 +403,85 @@ const passRate =
 const testType = env("TEST_TYPE", "regression");
 const branch = env("GITHUB_REF_NAME", "unknown");
 const runNumber = parseInt(env("GITHUB_RUN_NUMBER", "0"), 10);
-const userRole = env("USER_ROLE", "unknown"); // admin-user | general-user
+const now = Date.now();
 
+// 2. Build the full TestRun
 const newRun: TestRun = {
   runNumber,
   runId: env("GITHUB_RUN_ID"),
-  date: new Date().toISOString(),
+  date: new Date(now).toISOString(),
+  timestamp: now,
+
   branch,
   commitSha: env("GITHUB_SHA").slice(0, 7),
+
   env: env("ENV", "qa"),
-  userRole,
+  testType,
+  userRole: env("USER_ROLE", "unknown"),
+
   passed,
   failed,
   skipped,
-  flaky: 0, // JUnit XML does not carry flaky info; extend if needed
+  flaky: 0,
   total,
+
   passRate,
+  status: failed > 0 ? "FAIL" : "PASS",
+
   durationMs,
   durationMin: formatDuration(durationMs),
+
   reportUrl: buildReportUrl(runNumber),
   allureUrl: buildReportUrl(runNumber, "allure/index.html"),
-  failedTests, // ← per-test failure details
+
+  failedTests,
 };
 
-// 2. Load existing history file (or start fresh)
+// 3. Load existing history (or start fresh)
 let history: HistoryFile = {
-  lastUpdated: new Date().toISOString(),
+  meta: {
+    lastUpdated: new Date(now).toISOString(),
+    totalRunsEver: 0,
+    indexSize: 0,
+  },
+  index: [],
   byBranch: {},
 };
 
 if (fs.existsSync(HISTORY_FILE)) {
   try {
-    history = JSON.parse(fs.readFileSync(HISTORY_FILE, "utf-8")) as HistoryFile;
+    const raw = JSON.parse(
+      fs.readFileSync(HISTORY_FILE, "utf-8"),
+    ) as Partial<HistoryFile> & Record<string, unknown>;
 
-    // Migrate old flat shape (byTestType at root) → new branch-scoped shape
-    const legacy = history as unknown as Record<string, unknown>;
-    if (legacy["byTestType"] && !history.byBranch) {
+    // ── Migration: old flat shape had byTestType at root ──────────────────
+    if (raw["byTestType"] && !raw.byBranch) {
       logger.warn(
-        "[update-test-history] ⚠️  Migrating old flat history to branch-scoped shape.",
+        "[update-test-history] ⚠️  Migrating old flat history → branch-scoped shape.",
       );
       history = {
-        lastUpdated: history.lastUpdated,
+        meta: {
+          lastUpdated: (raw.lastUpdated as string) ?? new Date().toISOString(),
+          totalRunsEver: 0,
+          indexSize: 0,
+        },
+        index: [],
         byBranch: {
           unknown: {
-            byTestType: legacy["byTestType"] as Record<string, TestTypeHistory>,
+            byTestType: raw["byTestType"] as Record<string, TestTypeHistory>,
           },
         },
+      };
+    } else {
+      // ── Migration: previous version had no meta/index ─────────────────
+      history = {
+        meta: raw.meta ?? {
+          lastUpdated: (raw.lastUpdated as string) ?? new Date().toISOString(),
+          totalRunsEver: 0,
+          indexSize: 0,
+        },
+        index: raw.index ?? [],
+        byBranch: raw.byBranch ?? {},
       };
     }
   } catch {
@@ -387,7 +491,8 @@ if (fs.existsSync(HISTORY_FILE)) {
   }
 }
 
-// 3. Ensure branch + testType buckets exist
+// 4. ── TIER 3: update scoped bucket ──────────────────────────────────────────
+
 if (!history.byBranch[branch]) {
   history.byBranch[branch] = { byTestType: {} };
 }
@@ -395,14 +500,28 @@ if (!history.byBranch[branch].byTestType[testType]) {
   history.byBranch[branch].byTestType[testType] = { testType, runs: [] };
 }
 
-// 4. Append run and cap at MAX_RUNS_PER_TYPE
-history.byBranch[branch].byTestType[testType].runs.push(newRun);
-history.byBranch[branch].byTestType[testType].runs =
-  history.byBranch[branch].byTestType[testType].runs.slice(-MAX_RUNS_PER_TYPE);
+const bucket = history.byBranch[branch].byTestType[testType];
 
-history.lastUpdated = new Date().toISOString();
+// Prepend (newest-first) and cap
+bucket.runs.unshift(newRun);
+bucket.runs = bucket.runs.slice(0, MAX_RUNS_PER_TYPE);
 
-// 5. Write back
+// Strip failedTests from runs outside the detail window
+applyDetailWindow(bucket.runs);
+
+// 5. ── TIER 2: update lightweight index ──────────────────────────────────────
+
+const summary = toSummary(newRun);
+history.index.unshift(summary);
+history.index = history.index.slice(0, MAX_INDEX_RUNS);
+
+// 6. ── TIER 1: update meta ────────────────────────────────────────────────────
+
+history.meta.totalRunsEver = (history.meta.totalRunsEver ?? 0) + 1;
+history.meta.indexSize = history.index.length;
+history.meta.lastUpdated = new Date(now).toISOString();
+
+// 7. Write back
 try {
   fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2), "utf-8");
 } catch (err) {
@@ -410,10 +529,10 @@ try {
   process.exit(1);
 }
 
-const runCount = history.byBranch[branch].byTestType[testType].runs.length;
+// ─── Summary logs ─────────────────────────────────────────────────────────────
 
 logger.info(
-  `[update-test-history] ✅ Appended run #${runNumber} → branch="${branch}" testType="${testType}" userRole="${userRole}"`,
+  `[update-test-history] ✅ Run #${runNumber} → branch="${branch}" testType="${testType}" status=${newRun.status}`,
 );
 logger.info(
   `[update-test-history]    passed=${passed} failed=${failed} skipped=${skipped} passRate=${passRate}%`,
@@ -426,6 +545,12 @@ logger.info(
   }`,
 );
 logger.info(
-  `[update-test-history]    History now has ${runCount} run(s) for branch="${branch}" / testType="${testType}"`,
+  `[update-test-history]    Index: ${history.index.length}/${MAX_INDEX_RUNS} rows`,
+);
+logger.info(
+  `[update-test-history]    Bucket: ${bucket.runs.length}/${MAX_RUNS_PER_TYPE} runs (detail window: ${DETAIL_WINDOW})`,
+);
+logger.info(
+  `[update-test-history]    Total runs ever: ${history.meta.totalRunsEver}`,
 );
 logger.info(`[update-test-history]    Saved to ${HISTORY_FILE}`);
