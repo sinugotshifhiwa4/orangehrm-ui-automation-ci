@@ -95,8 +95,6 @@ interface FailedTest {
   name: string;
   /** Spec file path reported by Playwright JUnit output. */
   classname: string;
-  /** First 500 chars of the <failure>/<error> message. */
-  failureMessage: string;
   /** Duration of this individual test case in seconds. */
   durationSec: number;
   /** "failure" = assertion; "error" = unexpected exception. */
@@ -348,26 +346,6 @@ function collectFailedTestcases(
     if (!hasFailure && !hasError) continue;
 
     const kind: "failure" | "error" = hasFailure ? "failure" : "error";
-    const problemNode = hasFailure ? tcObj["failure"] : tcObj["error"];
-
-    // ── Extract failure message ────────────────────────────────────────────
-    // Playwright writes the assertion message in @_message and the full stack
-    // trace as the text body. We prefer @_message (concise) and fall back to
-    // the body text so the dashboard always shows something useful.
-    let rawMessage = "";
-    const firstNode = Array.isArray(problemNode)
-      ? (problemNode as unknown[])[0]
-      : problemNode;
-
-    if (typeof firstNode === "string") {
-      rawMessage = firstNode;
-    } else if (firstNode && typeof firstNode === "object") {
-      const nodeObj = firstNode as Record<string, unknown>;
-      const msgAttr = attrStr(nodeObj["@_message"]);
-      const bodyText = attrStr(nodeObj["#text"]);
-      // Prefer the short @message attribute; fall back to the stack body
-      rawMessage = msgAttr || bodyText;
-    }
 
     // ── Build test title ───────────────────────────────────────────────────
     // Playwright sets @_classname to the spec file path and @_name to the
@@ -380,7 +358,6 @@ function collectFailedTestcases(
     failedTests.push({
       name: truncate(testName, 200),
       classname: truncate(classname, 200),
-      failureMessage: truncate(rawMessage, 500),
       durationSec: Math.round(durationSec * 1000) / 1000,
       kind,
     });
@@ -651,9 +628,6 @@ if (failedTests.length > 0) {
   for (const ft of failedTests) {
     logger.info(
       `[update-test-history]      • [${ft.kind}] ${ft.name} (${ft.durationSec}s)`,
-    );
-    logger.info(
-      `[update-test-history]        ${ft.failureMessage.slice(0, 120)}`,
     );
   }
 }
