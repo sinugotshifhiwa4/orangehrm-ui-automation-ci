@@ -1,0 +1,464 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: layers/ui/login/InvalidLogin.spec.ts >> Invalid Login Test Suite >> should display invalid credentials error when submitting login form with incorrect username and password
+- Location: tests/layers/ui/login/InvalidLogin.spec.ts:22:3
+
+# Error details
+
+```
+Error: expect(locator).toBeVisible() failed
+
+Locator: getByRole('alert').getByText('Invalid credentials')
+Expected: visible
+Timeout: 90000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toBeVisible" with timeout 90000ms
+  - waiting for getByRole('alert').getByText('Invalid credentials')
+    - waiting for" https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate" navigation to finish...
+    - navigated to "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index"
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic:
+    - complementary [ref=e4]:
+      - navigation "Sidepanel" [ref=e5]:
+        - generic [ref=e6]:
+          - link "client brand banner" [ref=e7] [cursor=pointer]:
+            - /url: https://www.orangehrm.com/
+            - img "client brand banner" [ref=e9]
+          - text: 
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - generic [ref=e12]:
+              - textbox "Search" [ref=e15]
+              - button "" [ref=e16] [cursor=pointer]:
+                - generic [ref=e17]: 
+            - separator [ref=e18]
+          - list [ref=e19]:
+            - listitem [ref=e20]:
+              - link "Admin" [ref=e21] [cursor=pointer]:
+                - /url: /web/index.php/admin/viewAdminModule
+                - generic [ref=e24]: Admin
+            - listitem [ref=e25]:
+              - link "PIM" [ref=e26] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewPimModule
+                - generic [ref=e40]: PIM
+            - listitem [ref=e41]:
+              - link "Leave" [ref=e42] [cursor=pointer]:
+                - /url: /web/index.php/leave/viewLeaveModule
+                - generic [ref=e45]: Leave
+            - listitem [ref=e46]:
+              - link "Time" [ref=e47] [cursor=pointer]:
+                - /url: /web/index.php/time/viewTimeModule
+                - generic [ref=e53]: Time
+            - listitem [ref=e54]:
+              - link "Recruitment" [ref=e55] [cursor=pointer]:
+                - /url: /web/index.php/recruitment/viewRecruitmentModule
+                - generic [ref=e61]: Recruitment
+            - listitem [ref=e62]:
+              - link "My Info" [ref=e63] [cursor=pointer]:
+                - /url: /web/index.php/pim/viewMyDetails
+                - generic [ref=e69]: My Info
+            - listitem [ref=e70]:
+              - link "Performance" [ref=e71] [cursor=pointer]:
+                - /url: /web/index.php/performance/viewPerformanceModule
+                - generic [ref=e79]: Performance
+            - listitem [ref=e80]:
+              - link "Dashboard" [ref=e81] [cursor=pointer]:
+                - /url: /web/index.php/dashboard/index
+                - generic [ref=e84]: Dashboard
+            - listitem [ref=e85]:
+              - link "Directory" [ref=e86] [cursor=pointer]:
+                - /url: /web/index.php/directory/viewDirectory
+                - generic [ref=e89]: Directory
+            - listitem [ref=e90]:
+              - link "Maintenance" [ref=e91] [cursor=pointer]:
+                - /url: /web/index.php/maintenance/viewMaintenanceModule
+                - generic [ref=e95]: Maintenance
+            - listitem [ref=e96]:
+              - link "Claim" [ref=e97] [cursor=pointer]:
+                - /url: /web/index.php/claim/viewClaimModule
+                - img [ref=e100]
+                - generic [ref=e104]: Claim
+            - listitem [ref=e105]:
+              - link "Buzz" [ref=e106] [cursor=pointer]:
+                - /url: /web/index.php/buzz/viewBuzz
+                - generic [ref=e109]: Buzz
+    - banner [ref=e110]:
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - text: 
+          - heading "Dashboard" [level=6] [ref=e114]
+        - link "Upgrade" [ref=e116]:
+          - /url: https://orangehrm.com/open-source/upgrade-to-advanced
+          - button "Upgrade" [ref=e117] [cursor=pointer]: Upgrade
+        - list [ref=e123]:
+          - listitem [ref=e124]:
+            - generic [ref=e125] [cursor=pointer]:
+              - img "profile picture" [ref=e126]
+              - paragraph [ref=e127]: manda sd
+              - generic [ref=e128]: 
+      - navigation "Topbar Menu" [ref=e130]:
+        - list [ref=e131]:
+          - button "" [ref=e133] [cursor=pointer]:
+            - generic [ref=e134]: 
+  - generic [ref=e135]:
+    - generic [ref=e137]:
+      - generic [ref=e139]:
+        - generic [ref=e141]:
+          - generic [ref=e142]: 
+          - paragraph [ref=e143]: Time at Work
+        - separator [ref=e144]
+        - generic [ref=e146]:
+          - generic [ref=e147]:
+            - img "profile picture" [ref=e149]
+            - generic [ref=e150]:
+              - paragraph [ref=e151]: Punched In
+              - paragraph [ref=e152]: "Punched In: Apr 27th at 08:00 AM (GMT 8)"
+          - generic [ref=e153]:
+            - generic [ref=e154]: 9h 31m Today
+            - button "" [ref=e155] [cursor=pointer]:
+              - generic [ref=e156]: 
+          - separator [ref=e157]
+          - generic [ref=e158]:
+            - generic [ref=e159]:
+              - paragraph [ref=e160]: This Week
+              - paragraph [ref=e161]: Apr 27 - May 03
+            - generic [ref=e162]:
+              - generic [ref=e163]: 
+              - paragraph [ref=e164]: 0h 0m
+      - generic [ref=e168]:
+        - generic [ref=e170]:
+          - generic [ref=e171]: 
+          - paragraph [ref=e172]: My Actions
+        - separator [ref=e173]
+        - generic [ref=e175]:
+          - generic [ref=e176]:
+            - button [ref=e177] [cursor=pointer]
+            - paragraph [ref=e183] [cursor=pointer]: (1) Pending Self Review
+          - generic [ref=e184]:
+            - button [ref=e185] [cursor=pointer]
+            - paragraph [ref=e194] [cursor=pointer]: (1) Candidate to Interview
+      - generic [ref=e196]:
+        - generic [ref=e198]:
+          - generic [ref=e199]: 
+          - paragraph [ref=e200]: Quick Launch
+        - separator [ref=e201]
+        - generic [ref=e203]:
+          - generic [ref=e204]:
+            - button "Assign Leave" [ref=e205] [cursor=pointer]
+            - generic "Assign Leave" [ref=e208]:
+              - paragraph [ref=e209]: Assign Leave
+          - generic [ref=e210]:
+            - button "Leave List" [ref=e211] [cursor=pointer]
+            - generic "Leave List" [ref=e218]:
+              - paragraph [ref=e219]: Leave List
+          - generic [ref=e220]:
+            - button "Timesheets" [ref=e221] [cursor=pointer]
+            - generic "Timesheets" [ref=e227]:
+              - paragraph [ref=e228]: Timesheets
+          - generic [ref=e229]:
+            - button "Apply Leave" [ref=e230] [cursor=pointer]
+            - generic "Apply Leave" [ref=e233]:
+              - paragraph [ref=e234]: Apply Leave
+          - generic [ref=e235]:
+            - button "My Leave" [ref=e236] [cursor=pointer]
+            - generic "My Leave" [ref=e241]:
+              - paragraph [ref=e242]: My Leave
+          - generic [ref=e243]:
+            - button "My Timesheet" [ref=e244] [cursor=pointer]
+            - generic "My Timesheet" [ref=e247]:
+              - paragraph [ref=e248]: My Timesheet
+      - generic [ref=e250]:
+        - generic [ref=e252]:
+          - generic [ref=e253]: 
+          - paragraph [ref=e254]: Buzz Latest Posts
+        - separator [ref=e255]
+        - generic [ref=e257]:
+          - generic [ref=e258]:
+            - generic [ref=e259] [cursor=pointer]:
+              - img "profile picture" [ref=e261]
+              - generic [ref=e262]:
+                - paragraph [ref=e263]: manda sd
+                - paragraph [ref=e264]: 2026-29-04 08:03 AM
+            - separator [ref=e265]
+            - paragraph [ref=e266]: Hi Everyone Good Afternoon
+          - generic [ref=e267]:
+            - generic [ref=e268] [cursor=pointer]:
+              - img "profile picture" [ref=e270]
+              - generic [ref=e271]:
+                - paragraph [ref=e272]: Sania Shaheen
+                - paragraph [ref=e273]: 2020-08-10 03:38 AM
+            - separator [ref=e274]
+            - paragraph [ref=e275]: "World Championship: What makes the perfect snooker player? Mark Selby: Robertson has one of the best techniques in the game. It is very, very straight and he fully commits to every single shot he plays. John Higgins: Every shot is repetitive. He always keeps the same technique and cues through the ball bang straight. Barry Hawkins: Robertson is textbook with his grip and has a ramrod solid cue action, delivering it in a straight line. Honourable mentions: Shaun Murphy, Ding Junhui, Jack Lisowski."
+          - generic [ref=e276]:
+            - generic [ref=e277] [cursor=pointer]:
+              - img "profile picture" [ref=e279]
+              - generic [ref=e280]:
+                - paragraph [ref=e281]: Russel Hamilton
+                - paragraph [ref=e282]: 2020-08-10 03:33 AM
+            - separator [ref=e283]
+            - paragraph [ref=e284]: Live SIMPLY Dream BIG Be GREATFULL Give LOVE Laugh LOT.......
+      - generic [ref=e286]:
+        - generic [ref=e287]:
+          - paragraph [ref=e292]: Employees on Leave Today
+          - generic [ref=e293] [cursor=pointer]: 
+        - separator [ref=e294]
+        - generic [ref=e296]:
+          - img "No Content" [ref=e297]
+          - paragraph [ref=e298]: No Employees are on Leave Today
+      - generic [ref=e300]:
+        - generic [ref=e302]:
+          - generic [ref=e303]: 
+          - paragraph [ref=e304]: Employee Distribution by Sub Unit
+        - separator [ref=e305]
+        - list [ref=e310]:
+          - listitem [ref=e311] [cursor=pointer]:
+            - generic "Human Resources" [ref=e313]
+          - listitem [ref=e314] [cursor=pointer]:
+            - generic "Administration" [ref=e316]
+          - listitem [ref=e317] [cursor=pointer]:
+            - generic "Engineering" [ref=e319]
+          - listitem [ref=e320] [cursor=pointer]:
+            - generic "Client Services" [ref=e322]
+          - listitem [ref=e323] [cursor=pointer]:
+            - generic "Unassigned" [ref=e325]
+      - generic [ref=e327]:
+        - generic [ref=e329]:
+          - generic [ref=e330]: 
+          - paragraph [ref=e331]: Employee Distribution by Location
+        - separator [ref=e332]
+        - list [ref=e337]:
+          - listitem [ref=e338] [cursor=pointer]:
+            - generic "Texas R&D" [ref=e340]
+          - listitem [ref=e341] [cursor=pointer]:
+            - generic "New York Sales Office" [ref=e343]
+          - listitem [ref=e344] [cursor=pointer]:
+            - generic "Unassigned" [ref=e346]
+    - generic [ref=e347]:
+      - paragraph [ref=e348]: OrangeHRM OS 5.8
+      - paragraph [ref=e349]:
+        - text: © 2005 - 2026
+        - link "OrangeHRM, Inc" [ref=e350] [cursor=pointer]:
+          - /url: http://www.orangehrm.com
+        - text: . All rights reserved.
+```
+
+# Test source
+
+```ts
+  92  |     elementName: string,
+  93  |   ): Promise<string[]> {
+  94  |     return this.performAction(
+  95  |       async () => {
+  96  |         return elements.allTextContents();
+  97  |       },
+  98  |       callerMethodName,
+  99  |       `Retrieved all text contents from ${elementName}`,
+  100 |       `Failed to get all text contents from ${elementName}`,
+  101 |     );
+  102 |   }
+  103 | 
+  104 |   /**
+  105 |    * Checks if an element is visible.
+  106 |    * @param element The Locator of the element to check.
+  107 |    * @param callerMethodName The name of the method that called the action.
+  108 |    * @param elementName The name of the element.
+  109 |    * @returns A promise that resolves with true if the element is visible, or false otherwise.
+  110 |    */
+  111 |   public async isElementVisible(
+  112 |     element: Locator,
+  113 |     callerMethodName: string,
+  114 |     elementName: string,
+  115 |   ): Promise<boolean> {
+  116 |     return this.performAction(
+  117 |       () => element.isVisible(),
+  118 |       callerMethodName,
+  119 |       `Verified: ${elementName} is visible`,
+  120 |       `Failed to check visibility of ${elementName}`,
+  121 |     );
+  122 |   }
+  123 | 
+  124 |   /**
+  125 |    * Retrieves the count of matching elements.
+  126 |    * @param element The Locator of elements to retrieve the count from.
+  127 |    * @param callerMethodName The name of the method that called the action.
+  128 |    * @param elementName The name of the elements.
+  129 |    * @returns A promise that resolves with the count of matching elements.
+  130 |    */
+  131 |   public async getElementCount(
+  132 |     element: Locator,
+  133 |     callerMethodName: string,
+  134 |     elementName: string,
+  135 |   ): Promise<number> {
+  136 |     return this.performAction(
+  137 |       () => element.count(),
+  138 |       callerMethodName,
+  139 |       `Retrieved count for ${elementName}`,
+  140 |       `Failed to get count for ${elementName}`,
+  141 |     );
+  142 |   }
+  143 | 
+  144 |   /**
+  145 |    * Retrieves the bounding box of an element.
+  146 |    * @param element The Locator of the element to retrieve the bounding box from.
+  147 |    * @param callerMethodName The name of the method that called the action.
+  148 |    * @param elementName The name of the element.
+  149 |    * @returns A promise that resolves with the bounding box of the element if it succeeds, or null if it fails.
+  150 |    * The bounding box is represented as an object with the following properties:
+  151 |    * - x: The x-coordinate of the top-left corner of the bounding box.
+  152 |    * - y: The y-coordinate of the top-left corner of the bounding box.
+  153 |    * - width: The width of the bounding box.
+  154 |    * - height: The height of the bounding box.
+  155 |    */
+  156 |   public async getBoundingBox(
+  157 |     element: Locator,
+  158 |     callerMethodName: string,
+  159 |     elementName: string,
+  160 |   ): Promise<{ x: number; y: number; width: number; height: number } | null> {
+  161 |     return this.performAction(
+  162 |       () => element.boundingBox(),
+  163 |       callerMethodName,
+  164 |       `Retrieved bounding box for ${elementName}`,
+  165 |       `Failed to get bounding box for ${elementName}`,
+  166 |     );
+  167 |   }
+  168 | 
+  169 |   /**
+  170 |    * Verifies that an element is in a specified state.
+  171 |    * @param element The Locator of the element to verify the state of.
+  172 |    * @param callerMethodName The name of the method that called the action.
+  173 |    * @param state The desired state of the element: "enabled", "disabled", "visible", or "hidden".
+  174 |    * @param elementName The name of the element.
+  175 |    */
+  176 |   public async verifyElementState(
+  177 |     element: Locator,
+  178 |     callerMethodName: string,
+  179 |     state: AssertionElementState,
+  180 |     elementName: string,
+  181 |   ): Promise<void> {
+  182 |     await this.performAction(
+  183 |       async () => {
+  184 |         switch (state) {
+  185 |           case "enabled":
+  186 |             await expect(element).toBeEnabled();
+  187 |             break;
+  188 |           case "disabled":
+  189 |             await expect(element).toBeDisabled();
+  190 |             break;
+  191 |           case "visible":
+> 192 |             await expect(element).toBeVisible();
+      |                                   ^ Error: expect(locator).toBeVisible() failed
+  193 |             break;
+  194 |           case "hidden":
+  195 |             await expect(element).not.toBeVisible();
+  196 |             break;
+  197 |         }
+  198 |       },
+  199 |       callerMethodName,
+  200 |       `${elementName} state is ${state}`,
+  201 |       `Failed to verify element ${elementName} is ${state}`,
+  202 |     );
+  203 |   }
+  204 | 
+  205 |   /**
+  206 |    * Waits for an element to be in a specified state.
+  207 |    * @param element The Locator of the element to wait for.
+  208 |    * @param callerMethodName The name of the method that called the action.
+  209 |    * @param state The desired state of the element: "attached", "detached", "enabled", "disabled", "visible", or "hidden".
+  210 |    * @param elementName The name of the element.
+  211 |    * @param options Optional: timeout for the waitForElementState action.
+  212 |    * @returns A promise that resolves if the verification succeeds, or rejects with an error if it fails.
+  213 |    */
+  214 |   public async waitForElementState(
+  215 |     element: Locator,
+  216 |     callerMethodName: string,
+  217 |     state: WaitForElementState,
+  218 |     elementName: string,
+  219 |     options?: { timeout?: number },
+  220 |   ): Promise<void> {
+  221 |     await this.performAction(
+  222 |       async () => {
+  223 |         await element.waitFor({
+  224 |           state,
+  225 |           ...(options?.timeout !== undefined && { timeout: options.timeout }),
+  226 |         });
+  227 |       },
+  228 |       callerMethodName,
+  229 |       `${elementName} is ${state}`,
+  230 |       `Failed waiting for element ${elementName} to be ${state}`,
+  231 |     );
+  232 |   }
+  233 | 
+  234 |   /**
+  235 |    * Checks if an element reaches a specified state within the timeout period.
+  236 |    * @param element The Locator of the element to wait for.
+  237 |    * @param callerMethodName The name of the method that called the action.
+  238 |    * @param state The desired state of the element: "attached", "detached", "enabled", "disabled", "visible", or "hidden".
+  239 |    * @param elementName The name of the element.
+  240 |    * @param options Optional: timeout for the waitForElementState action.
+  241 |    * @returns A promise that resolves with true if the verification succeeds, or false if it fails.
+  242 |    */
+  243 |   public async isElementStateReached(
+  244 |     element: Locator,
+  245 |     callerMethodName: string,
+  246 |     state: WaitForElementState,
+  247 |     elementName: string,
+  248 |     options?: { timeout?: number },
+  249 |   ): Promise<boolean> {
+  250 |     try {
+  251 |       await this.performAction(
+  252 |         async () => {
+  253 |           await element.waitFor({
+  254 |             state,
+  255 |             ...(options?.timeout !== undefined && { timeout: options.timeout }),
+  256 |           });
+  257 |         },
+  258 |         callerMethodName,
+  259 |         `${elementName} is ${state}`,
+  260 |         `Failed waiting for element ${elementName} to be ${state}`,
+  261 |       );
+  262 | 
+  263 |       return true;
+  264 |     } catch (error) {
+  265 |       ErrorHandler.captureError(
+  266 |         error,
+  267 |         callerMethodName,
+  268 |         `waitForElementState failed for ${elementName}`,
+  269 |       );
+  270 |       return false;
+  271 |     }
+  272 |   }
+  273 | 
+  274 |   /**
+  275 |    * Checks if an element is editable.
+  276 |    * @param element The Locator of the element to check.
+  277 |    * @param callerMethodName The name of the method that called the action.
+  278 |    * @param elementName The name of the element.
+  279 |    * @returns A promise that resolves with true if the element is editable, or false otherwise.
+  280 |    */
+  281 |   public async isElementEditable(
+  282 |     element: Locator,
+  283 |     callerMethodName: string,
+  284 |     elementName: string,
+  285 |   ): Promise<boolean> {
+  286 |     return this.performAction(
+  287 |       () => element.isEditable(),
+  288 |       callerMethodName,
+  289 |       `${elementName} is editable`,
+  290 |       `Failed to check if ${elementName} is editable`,
+  291 |     );
+  292 |   }
+```
