@@ -212,6 +212,13 @@ const DETAIL_WINDOW = 20;
 /** Hard cap on failedTests entries per run to prevent huge suites bloating the file. */
 const MAX_FAILED_TESTS_STORED = 50;
 
+/**
+ * Cloudflare R2 public base URL for build report artifacts.
+ * Reports are stored at: <R2_PUBLIC_BASE>/build-reports/run-<number>-<env>/
+ */
+const R2_PUBLIC_BASE =
+  "https://pub-1a2929fbcaf44458951bbb84b49b5f3f.r2.dev/orangehrm-automation";
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function env(key: string, fallback = ""): string {
@@ -226,11 +233,20 @@ function formatDuration(ms: number): string {
   return `${minutes}m ${seconds}s`;
 }
 
-function buildReportUrl(runNumber: number, sub?: string): string {
-  const owner = env("GITHUB_REPOSITORY_OWNER");
-  const repo = env("GITHUB_REPOSITORY").split("/")[1] ?? "";
-  const base = `https://${owner}.github.io/${repo}/reports/${runNumber}`;
-  return sub ? `${base}/${sub}` : `${base}/index.html`;
+/**
+ * Builds report URLs pointing to Cloudflare R2 public storage.
+ * Playwright:  <R2_PUBLIC_BASE>/build-reports/run-<number>-<env>/playwright/index.html
+ * Allure:      <R2_PUBLIC_BASE>/build-reports/run-<number>-<env>/allure/index.html
+ */
+function buildReportUrls(
+  runNumber: number,
+  environment: string,
+): { reportUrl: string; allureUrl: string } {
+  const base = `${R2_PUBLIC_BASE}/build-reports/run-${runNumber}-${environment}`;
+  return {
+    reportUrl: `${base}/playwright/index.html`,
+    allureUrl: `${base}/allure/index.html`,
+  };
 }
 
 function attrStr(value: unknown): string {
@@ -403,9 +419,13 @@ const passRate =
 const testType = env("TEST_TYPE", "regression");
 const branch = env("GITHUB_REF_NAME", "unknown");
 const runNumber = parseInt(env("GITHUB_RUN_NUMBER", "0"), 10);
+const environment = env("ENV", "qa");
 const now = Date.now();
 
-// 2. Build the full TestRun
+// 2. Build report URLs from R2
+const { reportUrl, allureUrl } = buildReportUrls(runNumber, environment);
+
+// 3. Build the full TestRun
 const newRun: TestRun = {
   runNumber,
   runId: env("GITHUB_RUN_ID"),
@@ -415,7 +435,7 @@ const newRun: TestRun = {
   branch,
   commitSha: env("GITHUB_SHA").slice(0, 7),
 
-  env: env("ENV", "qa"),
+  env: environment,
   testType,
   userRole: env("USER_ROLE", "unknown"),
 
@@ -431,13 +451,13 @@ const newRun: TestRun = {
   durationMs,
   durationMin: formatDuration(durationMs),
 
-  reportUrl: buildReportUrl(runNumber),
-  allureUrl: buildReportUrl(runNumber, "allure/index.html"),
+  reportUrl,
+  allureUrl,
 
   failedTests,
 };
 
-// 3. Load existing history (or start fresh)
+// 4. Load existing history (or start fresh)
 let history: HistoryFile = {
   meta: {
     lastUpdated: new Date(now).toISOString(),
@@ -491,7 +511,7 @@ if (fs.existsSync(HISTORY_FILE)) {
   }
 }
 
-// 4. ── TIER 3: update scoped bucket ──────────────────────────────────────────
+// 5. ── TIER 3: update scoped bucket ──────────────────────────────────────────
 
 if (!history.byBranch[branch]) {
   history.byBranch[branch] = { byTestType: {} };
@@ -509,19 +529,19 @@ bucket.runs = bucket.runs.slice(0, MAX_RUNS_PER_TYPE);
 // Strip failedTests from runs outside the detail window
 applyDetailWindow(bucket.runs);
 
-// 5. ── TIER 2: update lightweight index ──────────────────────────────────────
+// 6. ── TIER 2: update lightweight index ──────────────────────────────────────
 
 const summary = toSummary(newRun);
 history.index.unshift(summary);
 history.index = history.index.slice(0, MAX_INDEX_RUNS);
 
-// 6. ── TIER 1: update meta ────────────────────────────────────────────────────
+// 7. ── TIER 1: update meta ────────────────────────────────────────────────────
 
 history.meta.totalRunsEver = (history.meta.totalRunsEver ?? 0) + 1;
 history.meta.indexSize = history.index.length;
 history.meta.lastUpdated = new Date(now).toISOString();
 
-// 7. Write back
+// 8. Write back
 try {
   fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2), "utf-8");
 } catch (err) {
@@ -544,6 +564,8 @@ logger.info(
       : ""
   }`,
 );
+logger.info(`[update-test-history]    reportUrl: ${reportUrl}`);
+logger.info(`[update-test-history]    allureUrl: ${allureUrl}`);
 logger.info(
   `[update-test-history]    Index: ${history.index.length}/${MAX_INDEX_RUNS} rows`,
 );
