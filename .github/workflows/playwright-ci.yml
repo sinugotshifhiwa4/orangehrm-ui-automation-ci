@@ -6,7 +6,10 @@ on:
       - "environment/QA"
   pull_request:
     branches:
-      - "environment/QA"
+      - "develop"
+  schedule:
+    - cron: "0 4 * * *"
+    - cron: "0 2 * * 3"
   workflow_dispatch:
     inputs:
       env:
@@ -74,7 +77,7 @@ env:
   ENV: ${{ github.event.inputs.env || 'qa' }}
   ENV_SLUG: ${{ github.event.inputs.env || 'qa' }}
   USER_ROLE: ${{ github.event.inputs.user_role || 'admin-user' }}
-  TEST_TYPE: ${{ github.event.inputs.test_type || 'regression' }}
+  TEST_TYPE: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.test_type || github.event_name == 'schedule' && github.event.schedule == '0 4 * * *' && 'sanity' || 'regression' }}
   TEST_LAYER: ${{ github.event.inputs.test_layer || 'ui' }}
   SHARD_COUNT: ${{ github.event.inputs.shard_count || '4' }}
   SKIP_BROWSER_INIT: ${{ github.event.inputs.skip_browser_init || 'false' }}
@@ -146,6 +149,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.event_name == 'schedule' && 'environment/QA' || github.ref }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -250,6 +255,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.event_name == 'schedule' && 'environment/QA' || github.ref }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -286,7 +293,8 @@ jobs:
           mkdir -p playwright-report
           PLAYWRIGHT_HTML_REPORT=playwright-report \
           PLAYWRIGHT_JUNIT_OUTPUT_NAME=playwright-report/results.xml \
-          npx playwright merge-reports --reporter=html,junit ./all-blob-reports
+          PLAYWRIGHT_JSON_OUTPUT_NAME=playwright-report/results.json \
+          npx playwright merge-reports --reporter=html,junit,json ./all-blob-reports
 
       - name: Generate Allure report
         run: |
@@ -393,7 +401,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
-        run: npx ts-node scripts/update-test-history.ts
+        run: npx tsx scripts/update-test-history/index.ts
 
       - name: Upload test history to R2
         if: always()
@@ -405,6 +413,28 @@ jobs:
             ./test-results-history.json \
             s3://orangehrm-ui-automation-ci/orangehrm-automation/test-results-history.json \
             --endpoint-url https://af1b78df22a3bdfaf204c4eca619e23d.r2.cloudflarestorage.com
+
+      # ── Upload build report artifacts to R2 ─────────────────────────────
+      - name: Upload build reports to R2
+        if: always()
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          R2_BASE="s3://orangehrm-ui-automation-ci/orangehrm-automation/build-reports/run-${{ github.run_number }}-${{ env.ENV }}"
+          ENDPOINT="https://af1b78df22a3bdfaf204c4eca619e23d.r2.cloudflarestorage.com"
+
+          echo "Uploading Playwright report to $R2_BASE/playwright/"
+          aws s3 cp ./playwright-report/ "$R2_BASE/playwright/" \
+            --recursive \
+            --endpoint-url "$ENDPOINT"
+
+          echo "Uploading Allure report to $R2_BASE/allure/"
+          aws s3 cp ./allure-report/ "$R2_BASE/allure/" \
+            --recursive \
+            --endpoint-url "$ENDPOINT"
+
+          echo "Build reports uploaded to: $R2_BASE"
       # ── END ──────────────────────────────────────────────────────────────
       - name: Job summary
         if: always()
@@ -412,6 +442,7 @@ jobs:
           REPO_NAME="${{ github.event.repository.name }}"
           PLAYWRIGHT_REPORT_URL="https://${{ github.repository_owner }}.github.io/${REPO_NAME}/reports/${{ github.run_number }}/index.html"
           ALLURE_REPORT_URL="https://${{ github.repository_owner }}.github.io/${REPO_NAME}/reports/${{ github.run_number }}/allure/index.html"
+          R2_BASE="orangehrm-ui-automation-ci/orangehrm-automation/build-reports/run-${{ github.run_number }}-${{ env.ENV }}"
           echo "### Playwright Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| | |" >> $GITHUB_STEP_SUMMARY
@@ -428,3 +459,4 @@ jobs:
           echo "[View full Allure report]($ALLURE_REPORT_URL)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "📦 Test history saved to \`s3://orangehrm-ui-automation-ci/orangehrm-automation/test-results-history.json\`" >> $GITHUB_STEP_SUMMARY
+          echo "📦 Build reports saved to \`s3://$R2_BASE/\`" >> $GITHUB_STEP_SUMMARY
