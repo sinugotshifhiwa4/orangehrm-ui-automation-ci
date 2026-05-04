@@ -6,7 +6,10 @@ on:
       - "environment/QA"
   pull_request:
     branches:
-      - "environment/QA"
+      - "develop"
+  schedule:
+    - cron: "0 4 * * *"
+    - cron: "0 2 * * 3"
   workflow_dispatch:
     inputs:
       env:
@@ -74,7 +77,7 @@ env:
   ENV: ${{ github.event.inputs.env || 'qa' }}
   ENV_SLUG: ${{ github.event.inputs.env || 'qa' }}
   USER_ROLE: ${{ github.event.inputs.user_role || 'admin-user' }}
-  TEST_TYPE: ${{ github.event.inputs.test_type || 'regression' }}
+  TEST_TYPE: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.test_type || github.event_name == 'schedule' && github.event.schedule == '0 4 * * *' && 'sanity' || 'regression' }}
   TEST_LAYER: ${{ github.event.inputs.test_layer || 'ui' }}
   SHARD_COUNT: ${{ github.event.inputs.shard_count || '4' }}
   SKIP_BROWSER_INIT: ${{ github.event.inputs.skip_browser_init || 'false' }}
@@ -146,6 +149,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.event_name == 'schedule' && 'environment/QA' || github.ref }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -250,6 +255,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.event_name == 'schedule' && 'environment/QA' || github.ref }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
