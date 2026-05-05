@@ -1,0 +1,2 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","94883","should load dashboard as the default page after successful login","general-user","2026-05-05","failed","2026-05-05","Dashboard Test Suite","layers/ui/menuItems/Dashboard.spec.ts","",""
