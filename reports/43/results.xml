@@ -1,0 +1,82 @@
+<testsuites id="" name="" tests="5" failures="0" skipped="0" errors="0" time="177.26136401367188">
+<testsuite name="layers/ui/login/InvalidLogin.spec.ts" timestamp="2026-05-05T16:30:19.145Z" hostname="admin-user" tests="2" failures="0" skipped="0" time="9.044" errors="0">
+<testcase name="Invalid Login Test Suite › should display required field errors when submitting login form without credentials" classname="layers/ui/login/InvalidLogin.spec.ts" time="3.871">
+<system-out>
+<![CDATA[2026-05-05T18:27:07+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-05-05T18:27:07+02:00 [[32minfo[39m]: company logo state is visible
+2026-05-05T18:27:08+02:00 [[32minfo[39m]: login title state is visible
+2026-05-05T18:27:08+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-05-05T18:27:08+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-05-05T18:27:08+02:00 [[32minfo[39m]: Clicked on login button
+2026-05-05T18:27:08+02:00 [[32minfo[39m]: username required error state is visible
+2026-05-05T18:27:08+02:00 [[32minfo[39m]: password required error state is visible
+2026-05-05T18:27:08+02:00 [[32minfo[39m]: Assertion Passed: Required field errors displayed when submitting login form without credentials
+
+[[ATTACHMENT|../all-blob-reports/resources/3cad0cd683127d039718bebd478d38a31c789bad.png]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Invalid Login Test Suite › should display invalid credentials error when submitting login form with incorrect username and password" classname="layers/ui/login/InvalidLogin.spec.ts" time="5.173">
+<system-out>
+<![CDATA[2026-05-05T18:27:11+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-05-05T18:27:11+02:00 [[32minfo[39m]: company logo state is visible
+2026-05-05T18:27:11+02:00 [[32minfo[39m]: login title state is visible
+2026-05-05T18:27:11+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-05-05T18:27:11+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-05-05T18:27:11+02:00 [[32minfo[39m]: Clicked on login button
+2026-05-05T18:27:13+02:00 [[32minfo[39m]: invalid credentials error state is visible
+2026-05-05T18:27:13+02:00 [[32minfo[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect username and password
+
+[[ATTACHMENT|../all-blob-reports/resources/3dd4eb4cc81df4780965730fe6d4637dd0fe53e7.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/login/InvalidLogin.spec.ts" timestamp="2026-05-05T16:30:19.145Z" hostname="admin-user" tests="1" failures="0" skipped="0" time="4.858" errors="0">
+<testcase name="Invalid Login Test Suite › should display invalid credentials error when submitting login form with incorrect username" classname="layers/ui/login/InvalidLogin.spec.ts" time="4.858">
+<system-out>
+<![CDATA[2026-05-05T18:28:03+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-05-05T18:28:04+02:00 [[32minfo[39m]: company logo state is visible
+2026-05-05T18:28:04+02:00 [[32minfo[39m]: login title state is visible
+2026-05-05T18:28:04+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-05-05T18:28:04+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-05-05T18:28:04+02:00 [[32minfo[39m]: Clicked on login button
+2026-05-05T18:28:06+02:00 [[32minfo[39m]: invalid credentials error state is visible
+2026-05-05T18:28:06+02:00 [[32minfo[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect username
+
+[[ATTACHMENT|../all-blob-reports/resources/ae6278d78c1283286314e0b8a6a1e3dfeee04090.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/login/InvalidLogin.spec.ts" timestamp="2026-05-05T16:30:19.145Z" hostname="admin-user" tests="1" failures="0" skipped="0" time="4.616" errors="0">
+<testcase name="Invalid Login Test Suite › should display invalid credentials error when submitting login form with incorrect password" classname="layers/ui/login/InvalidLogin.spec.ts" time="4.616">
+<system-out>
+<![CDATA[2026-05-05T18:29:44+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-05-05T18:29:45+02:00 [[32minfo[39m]: company logo state is visible
+2026-05-05T18:29:45+02:00 [[32minfo[39m]: login title state is visible
+2026-05-05T18:29:45+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-05-05T18:29:45+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-05-05T18:29:45+02:00 [[32minfo[39m]: Clicked on login button
+2026-05-05T18:29:46+02:00 [[32minfo[39m]: invalid credentials error state is visible
+2026-05-05T18:29:46+02:00 [[32minfo[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect password
+
+[[ATTACHMENT|../all-blob-reports/resources/476bc815b489ff865543614ecd99e67d11ee0357.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/login/ValidLogin.spec.ts" timestamp="2026-05-05T16:30:19.145Z" hostname="admin-user" tests="1" failures="0" skipped="0" time="2.143" errors="0">
+<testcase name="Valid Login Test Suite › verify page title is displayed correctly" classname="layers/ui/login/ValidLogin.spec.ts" time="2.143">
+<system-out>
+<![CDATA[2026-05-05T18:26:53+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-05-05T18:26:53+02:00 [[32minfo[39m]: Retrieved page title
+2026-05-05T18:26:53+02:00 [[32minfo[39m]: Verified: Page title 'OrangeHRM' matches expected 'OrangeHRM'
+2026-05-05T18:26:53+02:00 [[32minfo[39m]: Assertion Passed: Page title is correctly displayed as "OrangeHRM"
+
+[[ATTACHMENT|../all-blob-reports/resources/1f2f1cee229b4c8e69325792222e6a3ac8fe6f2e.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
