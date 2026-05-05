@@ -6,25 +6,16 @@ export default class AuthenticationSkipEvaluator {
    * Determines if authentication should be skipped for a test based on tags.
    *
    * @param testInfo - Playwright TestInfo object
-   * @param skipTags - Array of tags that indicate auth should be skipped (e.g. ['@skip-auth'])
    * @returns `true` if authentication setup should be skipped, otherwise `false`
    */
-  public static shouldSkipAuthenticationIfNeeded(
-    testInfo: TestInfo,
-    skipTags: string[],
-  ): boolean {
+  public static shouldSkipAuthenticationIfNeeded(testInfo: TestInfo): boolean {
     try {
-      if (!testInfo?.tags?.length) {
+      const testTags = AuthenticationSkipEvaluator.extractTags(testInfo);
+      if (!testTags.length) {
         return false;
       }
 
-      const normalizedSkipTags = skipTags.map((tag) =>
-        tag.trim().toLowerCase(),
-      );
-
-      const testTags = testInfo.tags.map((tag) => tag.toLowerCase());
-
-      return normalizedSkipTags.some((skipTag) => testTags.includes(skipTag));
+      return testTags.includes("@skip-auth");
     } catch (error) {
       ErrorHandler.captureError(
         error,
@@ -35,5 +26,17 @@ export default class AuthenticationSkipEvaluator {
       );
       return false;
     }
+  }
+
+  private static extractTags(testInfo: TestInfo): string[] {
+    const explicitTags = testInfo?.tags ?? [];
+    const titlePath = testInfo?.titlePath ?? [];
+    const titleTokens = [...titlePath, testInfo?.title ?? ""]
+      .join(" ")
+      .match(/@[\S]+/g);
+
+    return [...new Set([...explicitTags, ...(titleTokens ?? [])])].map((tag) =>
+      tag.trim().toLowerCase(),
+    );
   }
 }
