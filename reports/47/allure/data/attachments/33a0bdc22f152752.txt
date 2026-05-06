@@ -1,0 +1,61 @@
+2026-05-06T11:11:52+02:00 [info]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-05-06T11:12:25+02:00 [info]: company logo state is visible
+2026-05-06T11:12:25+02:00 [info]: login title state is visible
+2026-05-06T11:12:25+02:00 [info]: username input filled successfully with value: ********
+2026-05-06T11:12:25+02:00 [info]: password input filled successfully with value: ********
+2026-05-06T11:12:25+02:00 [info]: Clicked on login button
+2026-05-06T11:12:25+02:00 [info]: invalid credentials error state is hidden
+2026-05-06T11:13:25+02:00 [error]: {
+  "source": "verifyDashboardHeaderIsVisible",
+  "context": "Failed to verify element Dashboard header is visible",
+  "message": "expect(locator).toBeVisible() failed",
+  "timestamp": "2026-05-06T09:13:25.636Z",
+  "environment": "uat",
+  "stack": "expect(locator).toBeVisible() failed",
+  "errorType": "ExpectError",
+  "pass": false,
+  "matcherName": "toBeVisible",
+  "expected": "visible",
+  "log": [
+    "  - Expect \"toBeVisible\" with timeout 90000ms",
+    "  - waiting for getByRole('heading', { name: 'Dashboard' })",
+    "    - waiting for\" https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate\" navigation to finish...",
+    "    - navigated to \"https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index\""
+  ]
+}
+2026-05-06T11:13:25+02:00 [error]: {
+  "source": "verifyUpgradeButtonIsVisible",
+  "context": "Failed to verify element Upgrade button is visible",
+  "message": "expect(locator).toBeVisible() failed",
+  "timestamp": "2026-05-06T09:13:25.638Z",
+  "environment": "uat",
+  "stack": "expect(locator).toBeVisible() failed",
+  "errorType": "ExpectError",
+  "pass": false,
+  "matcherName": "toBeVisible",
+  "expected": "visible",
+  "log": [
+    "  - Expect \"toBeVisible\" with timeout 90000ms",
+    "  - waiting for getByRole('button', { name: 'Upgrade' })",
+    "    - waiting for\" https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate\" navigation to finish...",
+    "    - navigated to \"https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index\""
+  ]
+}
+2026-05-06T11:13:25+02:00 [error]: {
+  "source": "verifyUserDropdownSelectorIsVisible",
+  "context": "Failed to verify element User dropdown selector is visible",
+  "message": "expect(locator).toBeVisible() failed",
+  "timestamp": "2026-05-06T09:13:25.639Z",
+  "environment": "uat",
+  "stack": "expect(locator).toBeVisible() failed",
+  "errorType": "ExpectError",
+  "pass": false,
+  "matcherName": "toBeVisible",
+  "expected": "visible",
+  "log": [
+    "  - Expect \"toBeVisible\" with timeout 90000ms",
+    "  - waiting for getByRole('banner').getByRole('img', { name: 'profile picture' })",
+    "    - waiting for\" https://opensource-demo.orangehrmlive.com/web/index.php/auth/validate\" navigation to finish...",
+    "    - navigated to \"https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index\""
+  ]
+}
