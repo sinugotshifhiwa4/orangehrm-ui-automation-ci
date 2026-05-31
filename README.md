@@ -9,3 +9,19 @@ Built using a clean **Page Object Model (POM)** architecture, reusable utilities
 It runs consistently across both **local development** and **CI/CD pipelines**.
 
 ---
+
+## Getting Started
+
+Install project dependencies:
+
+```bash
+npm install
+```
+
+If Playwright browsers are not already installed:
+
+```bash
+npx playwright install
+```
+
+---

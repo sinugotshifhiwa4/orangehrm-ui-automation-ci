@@ -135,9 +135,7 @@ export const test = baseTest.extend<TestFixtures>({
    */
   storageState: async ({}, use, testInfo) => {
     const shouldSkipAuth =
-      AuthenticationSkipEvaluator.shouldSkipAuthenticationIfNeeded(testInfo, [
-        "@skip-auth",
-      ]);
+      AuthenticationSkipEvaluator.shouldSkipAuthenticationIfNeeded(testInfo);
 
     if (shouldSkipAuth) {
       await use(undefined);

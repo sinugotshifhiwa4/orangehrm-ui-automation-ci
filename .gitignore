@@ -4,6 +4,7 @@ node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
+/blob-report-*/
 /playwright/.cache/
 /playwright/.auth/
 /.auth/
@@ -11,6 +12,7 @@ node_modules/
 /dist/
 /downloads/
 /allure-results/
+/allure-results-*/
 /allure-report/
 /allure-reports/
 
