@@ -62,7 +62,10 @@ export function buildReportUrls(
  */
 export function applyDetailWindow(runs: TestRun[], detailWindow: number): void {
   for (let i = detailWindow; i < runs.length; i++) {
-    if (runs[i].failedTests.length > 0 || !runs[i].failedTestsStripped) {
+    if (
+      (runs[i].failedTests?.length ?? 0) > 0 ||
+      !runs[i].failedTestsStripped
+    ) {
       runs[i].failedTests = [];
       runs[i].failedTestsStripped = true;
     }
