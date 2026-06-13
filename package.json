@@ -1,8 +1,15 @@
 {
-  "name": "orangehrm-ui-automation-ci",
+  "name": "@automation1905517/orangehrm-ui-automation-ci",
   "version": "1.0.0",
   "description": "Playwright and TypeScript ui e2e automation framework for orange hrm application.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
     "prepare": "husky",
     "type-check": "tsc --noEmit",
@@ -28,7 +35,8 @@
     "report": "npx playwright show-report",
     "allure:generate": "npx allure-commandline generate allure-results --clean -o allure-report",
     "allure:open": "npx allure-commandline open allure-report",
-    "allure:report": "npm run allure:generate && npm run allure:open"
+    "allure:report": "npm run allure:generate && npm run allure:open",
+    "build": "tsc -p tsconfig.build.json"
   },
   "lint-staged": {
     "*.{ts,js}": [
@@ -93,5 +101,14 @@
     "luxon": "^3.7.2",
     "pdf-parse": "^2.4.5",
     "winston": "^3.19.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "@automation1905517:registry": "https://gitlab.com/api/v4/projects/81573721/packages/npm/"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.59.1"
   }
 }
