@@ -77,7 +77,7 @@ export function applyDetailWindow(runs: TestRun[], detailWindow: number): void {
  * the `failedTests` and `failedTestsStripped` fields.
  */
 export function toSummary(run: TestRun): RunSummary {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
   const { failedTests, failedTestsStripped, ...summary } = run;
   return summary;
 }

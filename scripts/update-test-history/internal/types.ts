@@ -116,7 +116,7 @@ export interface PlaywrightJsonReport {
   suites: PlaywrightJsonSuite[];
 }
 
-/** Normalised result returned by parsePlaywrightJson(). */
+/** Normalised result returned by ResultsParser.parse(). */
 export interface ParseResult {
   passed: number;
   failed: number;

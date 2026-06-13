@@ -36,7 +36,8 @@
     "azuredevops",
     "normalised",
     "uncolorization",
-    "initialisation"
+    "initialisation",
+    "preprod"
   ],
   "cSpell.ignorePaths": [
     "node_modules",

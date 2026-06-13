@@ -247,6 +247,12 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: always()
+    # Serialise the R2 test-history read-modify-write across overlapping runs
+    # (e.g. a push racing the nightly schedule). Queue, never cancel — a
+    # cancelled job would silently drop its history record.
+    concurrency:
+      group: test-history-${{ github.workflow }}
+      cancel-in-progress: false
     permissions:
       checks: write
       pull-requests: write
