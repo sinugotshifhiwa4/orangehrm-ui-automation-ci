@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","3363","should load dashboard as the default page after successful login","admin-user","2026-06-30","passed","2026-06-30","Dashboard Test Suite","layers/ui/menuItems/Dashboard.spec.ts","",""
+"","3393","verify page title is displayed correctly","admin-user","2026-06-30","passed","2026-06-30","Valid Login Test Suite","layers/ui/login/ValidLogin.spec.ts","",""
+"","3761","should display invalid credentials error when submitting login form with incorrect username","admin-user","2026-06-30","passed","2026-06-30","Valid Login Test Suite","layers/ui/login/ValidLogin.spec.ts","",""
+"","5172","Authenticate Admin User","setup-admin-user","2026-06-30","passed","2026-06-30","","layers/ui/authentication/Auth.admin-user.setup.ts","",""
