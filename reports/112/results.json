@@ -1,0 +1,1407 @@
+{
+  "config": {
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/src/configuration/system/environment/global/globalSetup.ts",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+        "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+        "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+      },
+      "gitCommit": {
+        "shortHash": "925f0df",
+        "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+        "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+        "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+        "author": {
+          "name": "Tshifhiwa Sinugo",
+          "email": "tshifhiwa@amrod.co.za",
+          "time": 1780217128000
+        },
+        "committer": {
+          "name": "Tshifhiwa Sinugo",
+          "email": "tshifhiwa@amrod.co.za",
+          "time": 1780217128000
+        },
+        "branch": "environment/QA"
+      },
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "setup-admin-user",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.admin-user\\.setup\\.ts/"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "data-cleanup",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.data-cleanup\\.spec\\.ts/"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "admin-user",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "setup-admin-user",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.admin-user\\.setup\\.ts/"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "data-cleanup",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.data-cleanup\\.spec\\.ts/"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "admin-user",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "setup-admin-user",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.admin-user\\.setup\\.ts/"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "data-cleanup",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.data-cleanup\\.spec\\.ts/"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "admin-user",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "setup-admin-user",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.admin-user\\.setup\\.ts/"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "data-cleanup",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.data-cleanup\\.spec\\.ts/"
+        ],
+        "timeout": 130000
+      },
+      {
+        "outputDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/commit/420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "commitHash": "420e9ee81e87e41af6bb7f7d4f01e97688345345",
+            "buildHref": "https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci/actions/runs/28498736483"
+          },
+          "gitCommit": {
+            "shortHash": "925f0df",
+            "hash": "925f0dfe0eff1970a635fc06ee1c9c3ec0829c2c",
+            "subject": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA",
+            "body": "Merge branch 'environment/QA' of https://github.com/sinugotshifhiwa4/orangehrm-ui-automation-ci into environment/QA\n",
+            "author": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "committer": {
+              "name": "Tshifhiwa Sinugo",
+              "email": "tshifhiwa@amrod.co.za",
+              "time": 1780217128000
+            },
+            "branch": "environment/QA"
+          },
+          "actualWorkers": 1
+        },
+        "name": "admin-user",
+        "testDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 130000
+      }
+    ],
+    "reporter": [
+      [
+        "dot"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "rootDir": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/tests",
+    "quiet": false,
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "layers/ui/authentication/Auth.admin-user.setup.ts",
+      "file": "layers/ui/authentication/Auth.admin-user.setup.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Authenticate Admin User",
+          "ok": true,
+          "tags": [
+            "authenticate",
+            "sanity",
+            "regression"
+          ],
+          "tests": [
+            {
+              "timeout": 130000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectName": "setup-admin-user",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 18937,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "2026-07-01T08:41:05+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: company logo state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: login title state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: username input filled successfully with value: ********\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: password input filled successfully with value: ********\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: Clicked on login button\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: invalid credentials error state is hidden\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:19+02:00 [\u001b[32minfo\u001b[39m]: Dashboard header state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:19+02:00 [\u001b[32minfo\u001b[39m]: Upgrade button state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:19+02:00 [\u001b[32minfo\u001b[39m]: User dropdown selector state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:19+02:00 [\u001b[35mdebug\u001b[39m]: Authentication state saved successfully\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:19+02:00 [\u001b[32minfo\u001b[39m]: Authentication session state created for role: ADMIN\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Fill username input with ********",
+                      "duration": 19
+                    },
+                    {
+                      "title": "Fill password input with ********",
+                      "duration": 18
+                    }
+                  ],
+                  "startTime": "2026-07-01T06:40:59.403Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/6574c080de37776791e5899debed5394bfdfa91a.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e11da8e338ab9cde536a-4ff65ec1d0da784c18e8",
+          "file": "layers/ui/authentication/Auth.admin-user.setup.ts",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "Authenticate Admin User",
+          "ok": true,
+          "tags": [
+            "authenticate",
+            "sanity",
+            "regression"
+          ],
+          "tests": [
+            {
+              "timeout": 130000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectName": "setup-admin-user",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 21866,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "2026-07-01T08:41:12+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: company logo state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: login title state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: username input filled successfully with value: ********\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: password input filled successfully with value: ********\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: Clicked on login button\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: invalid credentials error state is hidden\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:28+02:00 [\u001b[32minfo\u001b[39m]: Dashboard header state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:28+02:00 [\u001b[32minfo\u001b[39m]: Upgrade button state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:28+02:00 [\u001b[32minfo\u001b[39m]: User dropdown selector state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:28+02:00 [\u001b[35mdebug\u001b[39m]: Authentication state saved successfully\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:28+02:00 [\u001b[32minfo\u001b[39m]: Authentication session state created for role: ADMIN\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Fill username input with ********",
+                      "duration": 16
+                    },
+                    {
+                      "title": "Fill password input with ********",
+                      "duration": 23
+                    }
+                  ],
+                  "startTime": "2026-07-01T06:41:06.278Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/15261582d2a71fd99894ee35d3eb8d5f3343405f.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e11da8e338ab9cde536a-4ff65ec1d0da784c18e81",
+          "file": "layers/ui/authentication/Auth.admin-user.setup.ts",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "Authenticate Admin User",
+          "ok": true,
+          "tags": [
+            "authenticate",
+            "sanity",
+            "regression"
+          ],
+          "tests": [
+            {
+              "timeout": 130000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectName": "setup-admin-user",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17270,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "2026-07-01T08:41:05+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: company logo state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: login title state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: username input filled successfully with value: ********\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: password input filled successfully with value: ********\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: Clicked on login button\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:08+02:00 [\u001b[32minfo\u001b[39m]: invalid credentials error state is hidden\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: Dashboard header state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: Upgrade button state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: User dropdown selector state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[35mdebug\u001b[39m]: Authentication state saved successfully\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:17+02:00 [\u001b[32minfo\u001b[39m]: Authentication session state created for role: ADMIN\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Fill username input with ********",
+                      "duration": 31
+                    },
+                    {
+                      "title": "Fill password input with ********",
+                      "duration": 16
+                    }
+                  ],
+                  "startTime": "2026-07-01T06:41:00.671Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/01159fcd4dd7778996733493686966c3c49225cc.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e11da8e338ab9cde536a-4ff65ec1d0da784c18e82",
+          "file": "layers/ui/authentication/Auth.admin-user.setup.ts",
+          "line": 3,
+          "column": 1
+        },
+        {
+          "title": "Authenticate Admin User",
+          "ok": true,
+          "tags": [
+            "authenticate",
+            "sanity",
+            "regression"
+          ],
+          "tests": [
+            {
+              "timeout": 130000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectName": "setup-admin-user",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16354,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "2026-07-01T08:41:10+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:13+02:00 [\u001b[32minfo\u001b[39m]: company logo state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:13+02:00 [\u001b[32minfo\u001b[39m]: login title state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:13+02:00 [\u001b[32minfo\u001b[39m]: username input filled successfully with value: ********\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:13+02:00 [\u001b[32minfo\u001b[39m]: password input filled successfully with value: ********\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:13+02:00 [\u001b[32minfo\u001b[39m]: Clicked on login button\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:13+02:00 [\u001b[32minfo\u001b[39m]: invalid credentials error state is hidden\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:23+02:00 [\u001b[32minfo\u001b[39m]: Dashboard header state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:23+02:00 [\u001b[32minfo\u001b[39m]: Upgrade button state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:23+02:00 [\u001b[32minfo\u001b[39m]: User dropdown selector state is visible\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:23+02:00 [\u001b[35mdebug\u001b[39m]: Authentication state saved successfully\n"
+                    },
+                    {
+                      "text": "2026-07-01T08:41:23+02:00 [\u001b[32minfo\u001b[39m]: Authentication session state created for role: ADMIN\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Fill username input with ********",
+                      "duration": 20
+                    },
+                    {
+                      "title": "Fill password input with ********",
+                      "duration": 58
+                    }
+                  ],
+                  "startTime": "2026-07-01T06:41:06.415Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/ad782fc156483d0a4ce6b33954cf11068f743a8c.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e11da8e338ab9cde536a-4ff65ec1d0da784c18e83",
+          "file": "layers/ui/authentication/Auth.admin-user.setup.ts",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "layers/ui/login/InvalidLogin.spec.ts",
+      "file": "layers/ui/login/InvalidLogin.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Invalid Login Test Suite",
+          "file": "layers/ui/login/InvalidLogin.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should display required field errors when submitting login form without credentials",
+              "ok": true,
+              "tags": [
+                "skip-auth",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 130000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectName": "admin-user",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6224,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "2026-07-01T08:41:23+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:26+02:00 [\u001b[32minfo\u001b[39m]: company logo state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:26+02:00 [\u001b[32minfo\u001b[39m]: login title state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:26+02:00 [\u001b[32minfo\u001b[39m]: username input filled successfully with value: ********\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:26+02:00 [\u001b[32minfo\u001b[39m]: password input filled successfully with value: ********\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:26+02:00 [\u001b[32minfo\u001b[39m]: Clicked on login button\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:26+02:00 [\u001b[32minfo\u001b[39m]: username required error state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:26+02:00 [\u001b[32minfo\u001b[39m]: password required error state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:26+02:00 [\u001b[32minfo\u001b[39m]: Assertion Passed: Required field errors displayed when submitting login form without credentials\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Fill username input with ********",
+                          "duration": 13
+                        },
+                        {
+                          "title": "Fill password input with ********",
+                          "duration": 11
+                        }
+                      ],
+                      "startTime": "2026-07-01T06:41:20.438Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/663002c7819e78d8893b7939046124e0757bb5f1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4cac2c8849f44ffde4b0-154725890cad9f139cba",
+              "file": "layers/ui/login/InvalidLogin.spec.ts",
+              "line": 10,
+              "column": 3
+            },
+            {
+              "title": "should display invalid credentials error when submitting login form with incorrect username and password",
+              "ok": true,
+              "tags": [
+                "skip-auth",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 130000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectName": "admin-user",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 16032,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "2026-07-01T08:41:31+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:34+02:00 [\u001b[32minfo\u001b[39m]: company logo state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:34+02:00 [\u001b[32minfo\u001b[39m]: login title state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:34+02:00 [\u001b[32minfo\u001b[39m]: username input filled successfully with value: ********\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:34+02:00 [\u001b[32minfo\u001b[39m]: password input filled successfully with value: ********\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:34+02:00 [\u001b[32minfo\u001b[39m]: Clicked on login button\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:42+02:00 [\u001b[32minfo\u001b[39m]: invalid credentials error state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:42+02:00 [\u001b[32minfo\u001b[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect username and password\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Fill username input with ********",
+                          "duration": 13
+                        },
+                        {
+                          "title": "Fill password input with ********",
+                          "duration": 12
+                        }
+                      ],
+                      "startTime": "2026-07-01T06:41:26.768Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/41c4ee1d0364b26dd3d35cba402e976bf93cdf8d.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4cac2c8849f44ffde4b0-eb381ed8b05fbfd4e3e3",
+              "file": "layers/ui/login/InvalidLogin.spec.ts",
+              "line": 22,
+              "column": 3
+            },
+            {
+              "title": "should display invalid credentials error when submitting login form with incorrect username",
+              "ok": true,
+              "tags": [
+                "skip-auth",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 130000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectName": "admin-user",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12039,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "2026-07-01T08:41:34+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:36+02:00 [\u001b[32minfo\u001b[39m]: company logo state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:36+02:00 [\u001b[32minfo\u001b[39m]: login title state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:36+02:00 [\u001b[32minfo\u001b[39m]: username input filled successfully with value: ********\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:36+02:00 [\u001b[32minfo\u001b[39m]: password input filled successfully with value: ********\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:36+02:00 [\u001b[32minfo\u001b[39m]: Clicked on login button\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:41+02:00 [\u001b[32minfo\u001b[39m]: invalid credentials error state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:41+02:00 [\u001b[32minfo\u001b[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect username\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Fill username input with ********",
+                          "duration": 17
+                        },
+                        {
+                          "title": "Fill password input with ********",
+                          "duration": 13
+                        }
+                      ],
+                      "startTime": "2026-07-01T06:41:29.129Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/e29d07d4ae1d2ce3ec7ec18a99bc66bdba0b11b3.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4cac2c8849f44ffde4b0-9a62137ddf4b522cae85",
+              "file": "layers/ui/login/InvalidLogin.spec.ts",
+              "line": 35,
+              "column": 3
+            },
+            {
+              "title": "should display invalid credentials error when submitting login form with incorrect password",
+              "ok": true,
+              "tags": [
+                "skip-auth",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 130000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectName": "admin-user",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11748,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "2026-07-01T08:41:44+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:47+02:00 [\u001b[32minfo\u001b[39m]: company logo state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:47+02:00 [\u001b[32minfo\u001b[39m]: login title state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:47+02:00 [\u001b[32minfo\u001b[39m]: username input filled successfully with value: ********\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:47+02:00 [\u001b[32minfo\u001b[39m]: password input filled successfully with value: ********\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:47+02:00 [\u001b[32minfo\u001b[39m]: Clicked on login button\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:52+02:00 [\u001b[32minfo\u001b[39m]: invalid credentials error state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:52+02:00 [\u001b[32minfo\u001b[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect password\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Fill username input with ********",
+                          "duration": 15
+                        },
+                        {
+                          "title": "Fill password input with ********",
+                          "duration": 15
+                        }
+                      ],
+                      "startTime": "2026-07-01T06:41:41.275Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/cf8da2df55425f40db9ba57681e4edacaa37210f.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4cac2c8849f44ffde4b0-274ce794a6e83c4b9056",
+              "file": "layers/ui/login/InvalidLogin.spec.ts",
+              "line": 50,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "layers/ui/login/ValidLogin.spec.ts",
+      "file": "layers/ui/login/ValidLogin.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Valid Login Test Suite",
+          "file": "layers/ui/login/ValidLogin.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should display invalid credentials error when submitting login form with incorrect username",
+              "ok": true,
+              "tags": [
+                "regression",
+                "sanity"
+              ],
+              "tests": [
+                {
+                  "timeout": 130000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectName": "admin-user",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9420,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "2026-07-01T08:41:26+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:28+02:00 [\u001b[32minfo\u001b[39m]: Dashboard header state is visible\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:28+02:00 [\u001b[32minfo\u001b[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect username\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T06:41:18.884Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/f6d11d18193a1ba2daab66f23c632b790fa7fa85.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b57d8ef1cae4ea7c48f9-8ab226b081e3c5186828",
+              "file": "layers/ui/login/ValidLogin.spec.ts",
+              "line": 9,
+              "column": 3
+            },
+            {
+              "title": "verify page title is displayed correctly",
+              "ok": true,
+              "tags": [
+                "regression",
+                "sanity",
+                "skip-auth"
+              ],
+              "tests": [
+                {
+                  "timeout": 130000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectName": "admin-user",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4552,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "2026-07-01T08:41:32+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:32+02:00 [\u001b[32minfo\u001b[39m]: Retrieved page title\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:32+02:00 [\u001b[32minfo\u001b[39m]: Verified: Page title 'OrangeHRM' matches expected 'OrangeHRM'\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:32+02:00 [\u001b[32minfo\u001b[39m]: Assertion Passed: Page title is correctly displayed as \"OrangeHRM\"\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T06:41:28.406Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/5ec43090cc9e8955b89e1c7462f570d62a46a0e7.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b57d8ef1cae4ea7c48f9-746b8a0a5fc66aa3fd70",
+              "file": "layers/ui/login/ValidLogin.spec.ts",
+              "line": 18,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "layers/ui/menuItems/Dashboard.spec.ts",
+      "file": "layers/ui/menuItems/Dashboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Dashboard Test Suite",
+          "file": "layers/ui/menuItems/Dashboard.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load dashboard as the default page after successful login",
+              "ok": true,
+              "tags": [
+                "regression",
+                "sanity",
+                "dashboard"
+              ],
+              "tests": [
+                {
+                  "timeout": 130000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectName": "admin-user",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10433,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "2026-07-01T08:41:32+02:00 [\u001b[32minfo\u001b[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:34+02:00 [\u001b[32minfo\u001b[39m]: Class \"active\" found on element\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:34+02:00 [\u001b[32minfo\u001b[39m]: Verified: Dashboard is the default page with URL: /dashboard\\/index/\n"
+                        },
+                        {
+                          "text": "2026-07-01T08:41:34+02:00 [\u001b[32minfo\u001b[39m]: Assertion Passed: Dashboard is loaded as the default page with correct URL and title\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-01T06:41:24.542Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/runner/work/orangehrm-ui-automation-ci/orangehrm-ui-automation-ci/all-blob-reports/resources/29d25a80583d9a4477c4872b95a4cad767dad380.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "47350857b38bcc864f81-944e80a3497b9908a277",
+              "file": "layers/ui/menuItems/Dashboard.spec.ts",
+              "line": 9,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-07-01T06:40:58.328Z",
+    "duration": 54766.712890625,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
