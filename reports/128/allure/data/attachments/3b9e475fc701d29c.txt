@@ -1,0 +1,8 @@
+2026-07-15T07:08:22+02:00 [info]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-07-15T07:08:26+02:00 [info]: company logo state is visible
+2026-07-15T07:08:26+02:00 [info]: login title state is visible
+2026-07-15T07:08:26+02:00 [info]: username input filled successfully with value: ********
+2026-07-15T07:08:26+02:00 [info]: password input filled successfully with value: ********
+2026-07-15T07:08:26+02:00 [info]: Clicked on login button
+2026-07-15T07:08:32+02:00 [info]: invalid credentials error state is visible
+2026-07-15T07:08:32+02:00 [info]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect username
