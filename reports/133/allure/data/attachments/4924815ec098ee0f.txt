@@ -1,0 +1,12 @@
+2026-07-19T08:31:06+02:00 [info]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-07-19T08:31:06+02:00 [info]: company logo state is visible
+2026-07-19T08:31:06+02:00 [info]: login title state is visible
+2026-07-19T08:31:06+02:00 [info]: username input filled successfully with value: ********
+2026-07-19T08:31:06+02:00 [info]: password input filled successfully with value: ********
+2026-07-19T08:31:06+02:00 [info]: Clicked on login button
+2026-07-19T08:31:06+02:00 [info]: invalid credentials error state is hidden
+2026-07-19T08:31:08+02:00 [info]: Dashboard header state is visible
+2026-07-19T08:31:08+02:00 [info]: Upgrade button state is visible
+2026-07-19T08:31:08+02:00 [info]: User dropdown selector state is visible
+2026-07-19T08:31:08+02:00 [debug]: Authentication state saved successfully
+2026-07-19T08:31:08+02:00 [info]: Authentication session state created for role: ADMIN
