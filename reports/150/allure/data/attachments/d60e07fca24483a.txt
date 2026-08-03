@@ -1,0 +1,4 @@
+2026-08-03T09:29:10+02:00 [info]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-08-03T09:29:10+02:00 [info]: Retrieved page title
+2026-08-03T09:29:10+02:00 [info]: Verified: Page title 'OrangeHRM' matches expected 'OrangeHRM'
+2026-08-03T09:29:10+02:00 [info]: Assertion Passed: Page title is correctly displayed as "OrangeHRM"
