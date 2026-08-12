@@ -1,0 +1,9 @@
+2026-08-12T07:45:10+02:00 [error]: {
+  "source": "navigateToPortal",
+  "context": "Failed to navigate to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
+  "message": "page.goto: net::ERR_CONNECTION_TIMED_OUT at https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
+  "timestamp": "2026-08-12T05:45:10.217Z",
+  "environment": "qa",
+  "stack": "page.goto: net::ERR_CONNECTION_TIMED_OUT at https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
+  "errorType": "Error"
+}
