@@ -1,0 +1,103 @@
+<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="19.612751953125">
+<testsuite name="layers/ui/authentication/Auth.admin-user.setup.ts" timestamp="2026-08-23T04:38:56.284Z" hostname="setup-admin-user" tests="1" failures="0" skipped="0" time="5.299" errors="0">
+<testcase name="Authenticate Admin User" classname="layers/ui/authentication/Auth.admin-user.setup.ts" time="5.299">
+<system-out>
+<![CDATA[2026-08-23T06:38:26+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: company logo state is visible
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: login title state is visible
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: Clicked on login button
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: invalid credentials error state is hidden
+2026-08-23T06:38:28+02:00 [[32minfo[39m]: Dashboard header state is visible
+2026-08-23T06:38:28+02:00 [[32minfo[39m]: Upgrade button state is visible
+2026-08-23T06:38:28+02:00 [[32minfo[39m]: User dropdown selector state is visible
+2026-08-23T06:38:28+02:00 [[35mdebug[39m]: Authentication state saved successfully
+2026-08-23T06:38:28+02:00 [[32minfo[39m]: Authentication session state created for role: ADMIN
+
+[[ATTACHMENT|../all-blob-reports/resources/c8575fbc0950b0741b7bd502a2c3ec650f173368.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/login/ValidLogin.spec.ts" timestamp="2026-08-23T04:38:56.284Z" hostname="admin-user" tests="1" failures="0" skipped="0" time="3.9" errors="0">
+<testcase name="Valid Login Test Suite › should display invalid credentials error when submitting login form with incorrect username" classname="layers/ui/login/ValidLogin.spec.ts" time="3.9">
+<system-out>
+<![CDATA[2026-08-23T06:38:33+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-08-23T06:38:33+02:00 [[32minfo[39m]: Dashboard header state is visible
+2026-08-23T06:38:33+02:00 [[32minfo[39m]: Assertion Passed: Invalid credentials error displayed when submitting login form with incorrect username
+
+[[ATTACHMENT|../all-blob-reports/resources/57f0201fe7a20037b18a5967cfa18a68a920ff66.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/authentication/Auth.admin-user.setup.ts" timestamp="2026-08-23T04:38:56.284Z" hostname="setup-admin-user" tests="1" failures="0" skipped="0" time="4.837" errors="0">
+<testcase name="Authenticate Admin User" classname="layers/ui/authentication/Auth.admin-user.setup.ts" time="4.837">
+<system-out>
+<![CDATA[2026-08-23T06:38:26+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: company logo state is visible
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: login title state is visible
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: Clicked on login button
+2026-08-23T06:38:27+02:00 [[32minfo[39m]: invalid credentials error state is hidden
+2026-08-23T06:38:28+02:00 [[32minfo[39m]: Dashboard header state is visible
+2026-08-23T06:38:28+02:00 [[32minfo[39m]: Upgrade button state is visible
+2026-08-23T06:38:28+02:00 [[32minfo[39m]: User dropdown selector state is visible
+2026-08-23T06:38:28+02:00 [[35mdebug[39m]: Authentication state saved successfully
+2026-08-23T06:38:28+02:00 [[32minfo[39m]: Authentication session state created for role: ADMIN
+
+[[ATTACHMENT|../all-blob-reports/resources/c0731721637562e1afa83a87e84708aa10a8b55a.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/login/ValidLogin.spec.ts" timestamp="2026-08-23T04:38:56.284Z" hostname="admin-user" tests="1" failures="0" skipped="0" time="2.923" errors="0">
+<testcase name="Valid Login Test Suite › verify page title is displayed correctly" classname="layers/ui/login/ValidLogin.spec.ts" time="2.923">
+<system-out>
+<![CDATA[2026-08-23T06:38:32+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-08-23T06:38:32+02:00 [[32minfo[39m]: Retrieved page title
+2026-08-23T06:38:32+02:00 [[32minfo[39m]: Verified: Page title 'OrangeHRM' matches expected 'OrangeHRM'
+2026-08-23T06:38:32+02:00 [[32minfo[39m]: Assertion Passed: Page title is correctly displayed as "OrangeHRM"
+
+[[ATTACHMENT|../all-blob-reports/resources/7b37c1b7e6595bff5c8754849bf3b5e0b37748bd.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/authentication/Auth.admin-user.setup.ts" timestamp="2026-08-23T04:38:56.284Z" hostname="setup-admin-user" tests="1" failures="0" skipped="0" time="4.509" errors="0">
+<testcase name="Authenticate Admin User" classname="layers/ui/authentication/Auth.admin-user.setup.ts" time="4.509">
+<system-out>
+<![CDATA[2026-08-23T06:38:30+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-08-23T06:38:30+02:00 [[32minfo[39m]: company logo state is visible
+2026-08-23T06:38:30+02:00 [[32minfo[39m]: login title state is visible
+2026-08-23T06:38:30+02:00 [[32minfo[39m]: username input filled successfully with value: ********
+2026-08-23T06:38:31+02:00 [[32minfo[39m]: password input filled successfully with value: ********
+2026-08-23T06:38:31+02:00 [[32minfo[39m]: Clicked on login button
+2026-08-23T06:38:31+02:00 [[32minfo[39m]: invalid credentials error state is hidden
+2026-08-23T06:38:32+02:00 [[32minfo[39m]: Dashboard header state is visible
+2026-08-23T06:38:32+02:00 [[32minfo[39m]: Upgrade button state is visible
+2026-08-23T06:38:32+02:00 [[32minfo[39m]: User dropdown selector state is visible
+2026-08-23T06:38:32+02:00 [[35mdebug[39m]: Authentication state saved successfully
+2026-08-23T06:38:32+02:00 [[32minfo[39m]: Authentication session state created for role: ADMIN
+
+[[ATTACHMENT|../all-blob-reports/resources/c5df55b421207d2910a260c5e2d57024e85d5c3b.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="layers/ui/menuItems/Dashboard.spec.ts" timestamp="2026-08-23T04:38:56.284Z" hostname="admin-user" tests="1" failures="0" skipped="0" time="2.862" errors="0">
+<testcase name="Dashboard Test Suite › should load dashboard as the default page after successful login" classname="layers/ui/menuItems/Dashboard.spec.ts" time="2.862">
+<system-out>
+<![CDATA[2026-08-23T06:38:35+02:00 [[32minfo[39m]: Navigated to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-08-23T06:38:35+02:00 [[32minfo[39m]: Class "active" found on element
+2026-08-23T06:38:35+02:00 [[32minfo[39m]: Verified: Dashboard is the default page with URL: /dashboard\/index/
+2026-08-23T06:38:35+02:00 [[32minfo[39m]: Assertion Passed: Dashboard is loaded as the default page with correct URL and title
+
+[[ATTACHMENT|../all-blob-reports/resources/143d27486ab800b05c1a6f2a90bbe5894defc2c3.png]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
